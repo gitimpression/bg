@@ -14,11 +14,15 @@
         <result property="loginTime" column="login_time"/>
         <result property="email" column="email"/>
     </resultMap>
-    <sql id="getAllUserColumn">
-        id,username,headImg,role,userStatus,createTime,loginTime,email
+    <sql id="noUserPwdColumn">
+        id,username,head_img,role,user_status,create_time,login_time,email
     </sql>
     <select id="getUserById" resultMap="BaseColumnMap">
         select * from `user` where id = #{id}
+    </select>
+
+    <select id="login" resultMap="BaseColumnMap">
+        select <include refid="noUserPwdColumn" /> from `user` where username = #{username} and password = #{password}
     </select>
 
 </mapper>

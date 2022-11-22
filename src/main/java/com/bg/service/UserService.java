@@ -8,4 +8,5 @@ import com.bg.entity.User;
  */
 public interface UserService {
     User getUserById(Integer id);
+    User login(String username, String password);
 }

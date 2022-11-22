@@ -15,7 +15,7 @@ public class ComRet{
     private String  msg;
     private Map<String, Object> data = new HashMap<>();
     private static Integer DEFAULT_OK_CODE = 200;
-    private static Integer DEFAULT_FAIL_CODE = 400;
+    private static Integer DEFAULT_FAIL_CODE = 500;
     private static String DEFAULT_OK_MESSAGE = "ok";
     private static String DEFAULT_FAIL_MESSAGE = "error";
     public ComRet(){
@@ -101,7 +101,9 @@ public class ComRet{
     }
 
     public ComRet add(String key, Object value){
-        this.data = new HashMap<>();
+        if (this.data == null){
+            this.data = new HashMap<>();
+        }
         this.data.put(key, value);
         return this;
     }
