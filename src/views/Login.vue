@@ -4,10 +4,11 @@
             :model="loginForm" 
             class="loginForm" 
             :rules="rules"
-            v-loading="logging"
-            element-loading-text="正在登录..."
+            v-loading.fullscreen="loading"
+            element-loading-text="loading..."
             element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.2)"
+        
     >
         <h2 class="loginTitle">系统登录</h2>
         <el-form-item prop="username">
@@ -26,31 +27,35 @@
                 </el-col>
             </el-row>
         </el-form-item>
-        <el-row type="flex" justify="space-between" style="margin-bottom: 20px">
-                <el-col :span="6">
-                    <el-checkbox v-model="loginForm.remember" class="loginRemember">3天免登录</el-checkbox>
-                </el-col>
-                <el-col :span="6">
-                    <el-link type="primary">没有账号？去注册</el-link>
-                </el-col>
-            </el-row>
-        
+        <el-row type="flex" justify="space-between" style="margin: 10px auto">
+            <el-col style="width: auto">
+                <el-checkbox v-model="loginForm.remember" class="loginRemember">3天免登录</el-checkbox>
+            </el-col>
+            <el-col style="width: auto">
+                <el-link type="primary">没有账号？去注册</el-link>
+            </el-col>
+        </el-row>
         <el-button type="primary" @click="login()" class="loginBtn">登录</el-button>
+        <el-row type="flex" justify="end" style="margin: 10px auto">
+            <el-col style="width: auto">
+                <el-link type="primary">找回密码</el-link>
+            </el-col>
+        </el-row>
     </el-form>
   </div>
 </template>
 
 <script>
-import {request} from '@/util/api.js'
 import { Message } from 'element-ui'
 import Validator from '@/util/validator'
+import { getRequest, postRequest } from '@/util/api'
 export default {
     name: "Login",
     data() {
         return {
             verifyImgUrl: '',
-            logging: false,
-            loginForm: {
+            loading: false, // 遮罩
+            loginForm: {// 用户输入内容
                 username: 'admin',
                 password: '123456',
                 code: '',
@@ -73,18 +78,21 @@ export default {
     },
     methods: {
         getVerifyCodeImg(){
+            this.loading = true
             // 获取验证码图片
-            request('GET', '/api/verifyCodeImg?t=' + new Date().getTime(), {}).then(res =>{
+            getRequest('/api/verifyCodeImg?t=' + new Date().getTime(), {}).then(res =>{
                 this.verifyImgUrl = res.data.data
             }).catch( error => {
                 Message.error('请求验证码失败，code:' + error.code)
             })
+            this.loading = false
         }, 
         login(){
+            this.loading = true
             // 登录信息校验
             this.$refs.loginForm.validate((vaild) => {
                 if (vaild) {
-                    request('POST', '/api/user/login', this.loginForm)
+                    postRequest('/api/user/login', this.loginForm)
                     .then(res => {
                         if(res.code === 200){
                             console.log(JSON.stringify(res.data));
@@ -99,11 +107,14 @@ export default {
                             this.getVerifyCodeImg()// 刷新验证码
                         }
                     }).catch(err => {
+                        this.loading = false
                         this.$message.error(err.message)
                         this.getVerifyCodeImg()// 刷新验证码
                     })
+                    
                 } else {
                     this.$message.error("请检查输入的内容是否合法")
+                    // this.logging = false
                     return false
                 }
             })

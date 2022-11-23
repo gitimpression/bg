@@ -1,7 +1,6 @@
 export default {
      uName : (rule, value, callback) => {
         // 验证用户名
-        console.log(111);
         let unamePattern = /^[a-zA-Z0-9_-]{4,16}$/ //4到16位（字母，数字，下划线，减号）
         if(!unamePattern.test(value)){
             callback(new Error("用户名由4到16位字母、数字、下划线、减号组成"))

@@ -4,8 +4,8 @@ import router from "../router"
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
-    if(localStorage.getItem("uInfo")){
-        config.headers['uInfo'] = localStorage.getItem("uInfo")
+    if(localStorage.getItem("user_info")){
+        config.headers['user_info'] = localStorage.getItem("user_info")
     }
     return config
 }, error => {
@@ -28,9 +28,33 @@ axios.interceptors.response.use(response => {// axios 的 response
 
 let baseUrl = ''
 
-export const request = (method, url, params) => {
+export const getRequest = (url, params) => {
     return axios({
-        method,
+        method: "GET",
+        url: baseUrl + url,
+        data: params
+    })
+}
+
+export const postRequest = (url, params) => {
+    return axios({
+        method: "POST",
+        url: baseUrl + url,
+        data: params
+    })
+}
+
+export const putRequest = (url, params) => {
+    return axios({
+        method: "PUT",
+        url: baseUrl + url,
+        data: params
+    })
+}
+
+export const delRequest = (url, params) => {
+    return axios({
+        method: "DELETE",
         url: baseUrl + url,
         data: params
     })
