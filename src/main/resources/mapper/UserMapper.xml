@@ -8,14 +8,14 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="headImg" column="head_img"/>
-        <result property="role" column="role"/>
+        <result property="roleId" column="role_id"/>
         <result property="userStatus" column="user_status"/>
         <result property="createTime" column="create_time"/>
         <result property="loginTime" column="login_time"/>
         <result property="email" column="email"/>
     </resultMap>
     <sql id="noUserPwdColumn">
-        id,username,head_img,role,user_status,create_time,login_time,email
+        id,username,head_img,role_id,user_status,create_time,login_time,email
     </sql>
     <select id="getUserById" resultMap="BaseColumnMap">
         select * from `user` where id = #{id}

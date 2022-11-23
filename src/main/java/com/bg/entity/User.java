@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private String headImg;
-    private Integer role;
+    private Integer roleId;
     private Integer userStatus;
     private String createTime;
     private String loginTime;

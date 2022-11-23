@@ -29,7 +29,7 @@ public class JWTUtil {
                 // payload
                 .claim("userId", user.getId())
                 .claim("username", user.getUsername())
-                .claim("role", user.getRole())
+                .claim("roleId", user.getRoleId())
                 .setExpiration(new Date(System.currentTimeMillis() + expire))// 过期时间
                 .setId(UUID.randomUUID().toString())
                 // signature

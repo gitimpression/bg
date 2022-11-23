@@ -64,7 +64,7 @@ public class UserController {
         if (StringUtils.isEmpty(token)){// 创建token失败
             return ComRet.fail("创建登录状态失败");
         }
-        return ComRet.ok()
+        return ComRet.ok("登录成功")
                 .add("user", loginUser)
                 .add("token", token);
     }
@@ -73,12 +73,8 @@ public class UserController {
     public ComRet getVerifyCodeImg(HttpSession session) {
         VerifyCodeImg codeImg = new VerifyCodeImg();
         session.setAttribute("verifyCode", codeImg.getCode());
+        session.setMaxInactiveInterval(60); // 60秒失效
         return ComRet.ok().add("data", codeImg.getImg());
     }
 
-    @GetMapping("/test")
-    public ComRet test(){
-        Claims parse = JWTUtil.parse("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY2OTExMjIzOSwianRpIjoiZTYwMGM2ZjctM2I2Ni00NTc1LWEyNjQtMWU4YjQ1N2VlZjhiIn0.624XO2X58oBxa0fwOex2F_33ApY4weVmSNwv6BK1H_0");
-        return ComRet.ok("userId",parse.get("userId"));
-    }
 }

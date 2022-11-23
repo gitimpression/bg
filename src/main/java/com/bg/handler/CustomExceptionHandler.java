@@ -19,6 +19,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     @ResponseBody
     public ComRet handler(Throwable ex){
+        ex.printStackTrace();
         return ComRet.fail(ex.getMessage());
     }
 }
