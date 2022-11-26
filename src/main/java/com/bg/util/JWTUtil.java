@@ -1,5 +1,6 @@
 package com.bg.util;
 
+import com.bg.config.KeysProperties;
 import com.bg.entity.User;
 import io.jsonwebtoken.*;
 import org.springframework.util.StringUtils;
@@ -27,9 +28,9 @@ public class JWTUtil {
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
                 // payload
-                .claim("userId", user.getId())
-                .claim("username", user.getUsername())
-                .claim("roleId", user.getRoleId())
+                .claim(KeysProperties.TOKEN_USER_ID_KEY, user.getId())
+                .claim(KeysProperties.TOKEN_USERNAME_KEY, user.getUsername())
+                .claim(KeysProperties.TOKEN_ROLE_ID_KEY, user.getRoleId())
                 .setExpiration(new Date(System.currentTimeMillis() + expire))// 过期时间
                 .setId(UUID.randomUUID().toString())
                 // signature
@@ -51,5 +52,4 @@ public class JWTUtil {
         JwtParser jwtParser = Jwts.parser();
         return jwtParser.setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
-
 }

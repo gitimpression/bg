@@ -6,23 +6,28 @@
     <resultMap id="BaseColumnMap" type="User">
         <id property="id" column="id"/>
         <result property="username" column="username"/>
-        <result property="password" column="password"/>
         <result property="headImg" column="head_img"/>
         <result property="roleId" column="role_id"/>
         <result property="userStatus" column="user_status"/>
         <result property="createTime" column="create_time"/>
         <result property="loginTime" column="login_time"/>
         <result property="email" column="email"/>
+        <result property="birthday" column="birthday"/>
+        <result property="gender" column="gender"/>
     </resultMap>
     <sql id="noUserPwdColumn">
-        id,username,head_img,role_id,user_status,create_time,login_time,email
+        `id`,`username`,`head_img`,`role_id`,`user_status`,`create_time`,`login_time`,`email`,`birthday`,`gender`
     </sql>
     <select id="getUserById" resultMap="BaseColumnMap">
-        select * from `user` where id = #{id}
+        select <include refid="noUserPwdColumn" /> from `user` where id = #{id}
     </select>
 
     <select id="login" resultMap="BaseColumnMap">
         select <include refid="noUserPwdColumn" /> from `user` where username = #{username} and password = #{password}
+    </select>
+
+    <select id="getRoleName" resultType="string">
+        select `name` from `role` where id = #{id}
     </select>
 
 </mapper>

@@ -7,19 +7,21 @@
     <resultMap id="SystemMenuResultMap" type="SystemMenu">
         <id property="id" column="id" jdbcType="BIGINT" javaType="Long" />
         <result property="name" column="name" jdbcType="VARCHAR" javaType="String"/>
+        <result property="url" column="url" jdbcType="VARCHAR" javaType="String"/>
         <result property="path" column="path" jdbcType="VARCHAR" javaType="String"/>
         <result property="component" column="component" jdbcType="VARCHAR" javaType="String"/>
         <result property="parentId" column="parent_id" jdbcType="BIGINT" javaType="Long"/>
         <result property="iconClz" column="icon_clz" jdbcType="VARCHAR" javaType="String"/>
         <result property="enabled" column="enabled" jdbcType="VARCHAR" javaType="String"/>
         <result property="keepAlive" column="keep_alive" jdbcType="VARCHAR" javaType="String"/>
-        <result property="roleId" column="BIGINT" jdbcType="VARCHAR" javaType="Long"/>
     </resultMap>
     <sql id="BaseColumn">
-        `id`,`name`,`path`,`component`,`parent_id`,`icon_clz`,`enabled`,`keep_alive`,`role_id`
+        `id`,`name`,`url`,`path`,`component`,`parent_id`,`icon_clz`,`enabled`,`keep_alive`
     </sql>
 
     <select id="getSystemMenuByRoleId" resultMap="SystemMenuResultMap">
-        select <include refid="BaseColumn" /> from `sys_menu` where `role_id` = #{roleId}
+<!--    根据用户角色获取权限-->
+        select <include refid="BaseColumn" /> from `sys_menu`
+        where `permission_id` in (select `permission_id` from `role_permission` where `role_id` = #{roleId})
     </select>
 </mapper>

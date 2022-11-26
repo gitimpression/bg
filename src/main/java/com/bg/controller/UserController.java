@@ -1,16 +1,15 @@
 package com.bg.controller;
 
+import com.bg.config.KeysProperties;
 import com.bg.entity.User;
 import com.bg.service.UserService;
 import com.bg.util.ComRet;
 import com.bg.util.JWTUtil;
 import com.bg.util.VerifyCodeImg;
 import io.jsonwebtoken.Claims;
-
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -24,12 +23,32 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping("/user/{id}")
-    public ComRet getUserById(@PathVariable("id")Integer id){
-        User user = userService.getUserById(id);
-        return ComRet.ok().add("user", user);
+    /**
+     * 获取用户信息
+     * @param headers 请求头以便获取token
+     * @return 用户信息
+     */
+    @GetMapping("/user/info")
+    public ComRet getUserById(@RequestHeader Map<String, String> headers){
+        String token = headers.get(KeysProperties.TOKEN_KEY);
+        if (StringUtils.isEmpty(token)){
+            return ComRet.fail("用户未登录，无法获取用户信息");
+        }
+        Claims claims = JWTUtil.parse(token);
+        if (claims == null){
+            return ComRet.fail("用户未登录或登录状态过期");
+        }
+        Integer userId = Integer.parseInt(claims.get(KeysProperties.TOKEN_USER_ID_KEY).toString());
+        User user = userService.getUserById(userId);
+        return ComRet.ok("查询成功").add("user", user);
     }
 
+    /**
+     * 用户登录
+     * @param map 请求体
+     * @param session session
+     * @return return
+     */
     @PostMapping("/user/login")
     public ComRet login(@RequestBody Map<String,String> map, HttpSession session){
         String username = map.get("username");
@@ -64,11 +83,47 @@ public class UserController {
         if (StringUtils.isEmpty(token)){// 创建token失败
             return ComRet.fail("创建登录状态失败");
         }
-        return ComRet.ok("登录成功")
-                .add("user", loginUser)
-                .add("token", token);
+        return ComRet.ok("登录成功").add("data", token);
     }
 
+    /**
+     * 用户退出登录
+     * @param headers headers
+     * @return return
+     */
+    @PostMapping("/user/logout")
+    public ComRet logout(@RequestHeader Map<String, String> headers){
+        // TODO 日志记录
+        String token = headers.get(KeysProperties.TOKEN_KEY);
+        Claims claims = JWTUtil.parse(token);
+        if (claims != null && claims.get("userId") != null){
+            return ComRet.ok("退出登录成功");
+        }
+        return ComRet.fail("退出登录失败");
+    }
+
+    /**
+     * 获取用户roleId对应的角色名
+     * @param headers 请求头
+     * @return 角色名
+     */
+    @GetMapping("/user/role")
+    public ComRet getRole(@RequestHeader Map<String,String> headers) {
+        String token = headers.get(KeysProperties.TOKEN_KEY);
+        Claims claims = JWTUtil.parse(token);
+        if (claims == null){
+            return ComRet.fail("无法获取身份数据");
+        }
+        String roleId = claims.get(KeysProperties.TOKEN_ROLE_ID_KEY).toString();
+        String name = userService.getRoleName(Long.parseLong(roleId));
+        return ComRet.ok("查询成功").add("data",name);
+    }
+
+    /**
+     * 获取图片验证码
+     * @param session session存放验证码值
+     * @return return
+     */
     @GetMapping("/verifyCodeImg")
     public ComRet getVerifyCodeImg(HttpSession session) {
         VerifyCodeImg codeImg = new VerifyCodeImg();

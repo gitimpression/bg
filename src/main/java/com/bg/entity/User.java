@@ -23,4 +23,6 @@ public class User implements Serializable {
     private String createTime;
     private String loginTime;
     private String email;
+    private String birthday;
+    private Integer gender;
 }

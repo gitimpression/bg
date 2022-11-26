@@ -4,6 +4,7 @@ import com.bg.entity.SystemMenu;
 import com.bg.mapper.SystemMenuMapper;
 import com.bg.service.SystemMenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2022/11/23 22:07
  */
 @Service
+@Transactional
 public class SystemMenuServiceImpl implements SystemMenuService {
     @Resource
     private SystemMenuMapper systemMenuMapper;

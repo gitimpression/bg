@@ -2,7 +2,6 @@ package com.bg.mapper;
 
 import com.bg.entity.SystemMenu;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**

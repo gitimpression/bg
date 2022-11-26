@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
     User getUserById(@Param("id") Integer id);
     User login(@Param("username") String username, @Param("password") String password);
+    String getRoleName(Long id);
 }

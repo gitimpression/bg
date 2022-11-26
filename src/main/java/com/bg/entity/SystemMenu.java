@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -19,13 +18,14 @@ import java.util.List;
 public class SystemMenu implements Comparable<SystemMenu> , Serializable {
     private Long id;
     private String name;
+    private String url;
     private String path;
     private String component;
     private Long parentId;
     private String iconClz;
     private String enabled;
     private String keepAlive;
-    private Long roleId;
+    private Long permissionId;
     private List<SystemMenu> children = new ArrayList<>();// 封装数据返回给前端
 
 

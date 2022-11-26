@@ -4,6 +4,7 @@ import com.bg.entity.User;
 import com.bg.mapper.UserMapper;
 import com.bg.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
  * @date 2022/11/22 4:01
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
@@ -23,5 +25,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String username, String password) {
         return userMapper.login(username, password);
+    }
+
+    @Override
+    public String getRoleName(Long id) {
+        return userMapper.getRoleName(id);
     }
 }
