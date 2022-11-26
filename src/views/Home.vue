@@ -1,55 +1,67 @@
 <template>
-  <div>
-    <el-container>
-      <el-header>Header</el-header>
-        <el-container>
-          <el-aside width="200px">
-            <!-- router 点击菜单时会将index作为path进行跳转 -->
-            <el-menu router>
-              <!-- 获取路由规则列表 -->
-              <el-submenu index="1" 
-              v-for="(item,index) in this.$router.options.routes.filter(i => i.hidden!==true)" 
-              :key="index">
-                <template slot="title">{{item.name}}</template>
-                <el-menu-item-group>
-                  <!-- 从子路由获取名字与路径 -->
-                  <el-menu-item 
-                  :index="children.path"
-                  v-for="(children,index) in item.children" 
-                  :key="index">
-                  {{children.title}}</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-            </el-menu>
-          </el-aside>
-          <el-main>
-            <router-view />
-          </el-main>
+  <div class="home">
+    <el-container style="height: 100%">
+      <!-- 顶部 -->
+      <el-header class="home-header">
+        <Header></Header>
+      </el-header>
+      <el-container>
+        <!-- 左侧导航 -->
+        <el-aside class="home-aside">
+            <Aside></Aside>
+        </el-aside>
+        <!-- 中间内容 -->
+        <el-main>
+          <div v-if="this.$router.currentRoute.path == '/home'">
+            <welcome></welcome>
+
+          </div>
+          <!-- <div v-else>
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+              <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+              <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div> -->
+          <router-view />
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-import { getRequest } from '@/util/api'
-export default {
-    name: 'Home',
-    data() {
-        return {
-            
-        }
-    },
-    methods: {
 
-    },
-    mounted(){
-      getRequest("/api/sys/menu",{}).then(res => {
-        console.log(res);
-      })
+import Header from '@/components/header/Header.vue'
+import Aside from '@/components/aside/Aside.vue';
+import Welcome from '@/components/main/Welcome.vue';
+
+export default {
+  name: "Home",
+  data() {
+    return {
     }
-}
+  },
+  components: {
+    Aside,
+    Header,
+    Welcome
+  },
+};
 </script>
 
-<style>
-
+<style >
+.home-aside {
+  width: auto!important;;
+  height: 100%;
+  background-color: rgb(84,92,100);
+}
+.home-header{
+  width: 100%;
+  background-color: rgb(84,92,100);
+}
+.home {
+  height: 100%;
+}
 </style>

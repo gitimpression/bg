@@ -5,10 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    routes: [] // 用户的路由
+    routes: [] // 路由数据
   },
   mutations: {
-    initRoutes(state, data){
+    initRoutes(state, data){// 初始化路由
       state.routes = data
     }
   },

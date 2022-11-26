@@ -8,7 +8,6 @@
             element-loading-text="loading..."
             element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(0, 0, 0, 0.2)"
-        
     >
         <h2 class="loginTitle">系统登录</h2>
         <el-form-item prop="username">
@@ -46,9 +45,10 @@
 </template>
 
 <script>
-import { Message } from 'element-ui'
-import Validator from '@/util/validator'
+import validator from '@/util/validator'
 import { getRequest, postRequest } from '@/util/api'
+import keysProperties from '@/config/keysProperties'
+
 export default {
     name: "Login",
     data() {
@@ -63,14 +63,14 @@ export default {
             },
             rules:{ // 验证规则
                 username: [{
-                    validator: Validator.uName, 
+                    validator: validator.uName, 
                     trigger: 'blur'}],
                 password: [{
-                    validator: Validator.uPass, 
+                    validator: validator.uPass, 
                     trigger: 'blur'
                 }],
                 code: [{
-                    validator: Validator.uCode, 
+                    validator: validator.uCode, 
                     trigger: 'blur'
                 }]
             },
@@ -80,10 +80,8 @@ export default {
         getVerifyCodeImg(){
             this.loading = true
             // 获取验证码图片
-            getRequest('/api/verifyCodeImg?t=' + new Date().getTime(), {}).then(res =>{
+            getRequest('/api/verifyCodeImg?t=' + new Date().getTime()).then(res =>{
                 this.verifyImgUrl = res.data.data
-            }).catch( error => {
-                Message.error('请求验证码失败，code:' + error.code)
             })
             this.loading = false
         }, 
@@ -95,8 +93,7 @@ export default {
                     postRequest('/api/user/login', this.loginForm)
                     .then(res => {
                         if(res.code === 200){
-                            console.log(JSON.stringify(res.data));
-                            localStorage.setItem("uInfo", JSON.stringify(res.data));
+                            localStorage.setItem(keysProperties.tokenKey, res.data.data);
                             this.$message({
                                 message: res.msg,
                                 type:'success'
@@ -114,7 +111,6 @@ export default {
                     
                 } else {
                     this.$message.error("请检查输入的内容是否合法")
-                    // this.logging = false
                     return false
                 }
             })

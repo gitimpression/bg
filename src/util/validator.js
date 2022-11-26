@@ -17,6 +17,15 @@ export default {
             callback();
         }
     },
+    uEmail: (rule, value, callback) => {
+        // 验证邮箱
+        let codePattern = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+        if(!codePattern.test(value)){
+            callback(new Error("邮箱格式不正确"))
+        }else{
+            callback();
+        }
+    },
     uCode: (rule, value, callback) => {
         // 验证验证码
         let codePattern = /^[a-zA-Z0-9]{4}$/ // 4位数字或字母）
@@ -25,6 +34,7 @@ export default {
         }else{
             callback();
         }
-    }
+    },
+    
 }
 
