@@ -10,4 +10,5 @@ public interface UserService {
     User getUserById(Integer id);
     User login(String username, String password);
     String getRoleName(Long id);
+    boolean changeUserHeadImg(Long userId, String fileName);
 }

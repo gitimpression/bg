@@ -30,4 +30,8 @@
         select `name` from `role` where id = #{id}
     </select>
 
+    <update id="changeUserHeadImg">
+        update `user` set `head_img` = #{head_img} where `id` = #{user_id}
+    </update>
+
 </mapper>

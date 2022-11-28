@@ -4,7 +4,6 @@ import com.bg.entity.BgData;
 import com.bg.service.BgDataService;
 import com.bg.util.ComRet;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class BgDataController {
 
     @PostMapping("/data")
     public ComRet getDataByConditions(@RequestBody BgData bgData){
-        // TODO 请求前验证身份
         List<BgData> datas = bgDataService.getDataByConditions(bgData);
         return ComRet.ok().add("data", datas);
     }

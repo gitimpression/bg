@@ -13,3 +13,4 @@
 /.idea
 /src/test
 *.log
+/src/main/webapp/upload

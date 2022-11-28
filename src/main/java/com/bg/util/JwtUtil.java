@@ -11,7 +11,7 @@ import java.util.UUID;
  * @author ctp
  * @date 2022/11/22 17:20
  */
-public class JWTUtil {
+public class JwtUtil {
 
     private static final String SECRET = "project_bg_token_secret";// 密钥
     private static Long expire = 1000 * 60 * 60 * 24L; // 过期时间 1天

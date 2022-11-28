@@ -4,7 +4,7 @@ import com.bg.config.KeysProperties;
 import com.bg.entity.SystemMenu;
 import com.bg.service.SystemMenuService;
 import com.bg.util.ComRet;
-import com.bg.util.JWTUtil;
+import com.bg.util.JwtUtil;
 import com.bg.util.SystemMenusUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.web.bind.annotation.*;
@@ -35,15 +35,8 @@ public class SystemMenuController {
      */
     @GetMapping("/menu")
     public ComRet getSysMenu(@RequestHeader Map<String, String> headers) {
-        // 前置拦截
 
-        // 获取参数
-        String token = headers.get(KeysProperties.TOKEN_KEY);
-        Claims claims = JWTUtil.parse(token);
-        if (claims == null){// 没有token或者token为空
-            return ComRet.fail("无法获取登录状态");
-        }
-        long roleId = Long.parseLong(claims.get(KeysProperties.TOKEN_ROLE_ID_KEY).toString());
+        long roleId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_ROLE_ID_KEY));
         // 查询数据
         List<SystemMenu> menus = systemMenuService.getSystemMenuByRoleId(roleId)
                                 .stream().filter(menu -> "true".equals(menu.getEnabled()))

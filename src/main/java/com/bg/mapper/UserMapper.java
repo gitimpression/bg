@@ -11,4 +11,5 @@ public interface UserMapper {
     User getUserById(@Param("id") Integer id);
     User login(@Param("username") String username, @Param("password") String password);
     String getRoleName(Long id);
+    boolean changeUserHeadImg(@Param("user_id") Long userId, @Param("head_img") String fileName);
 }

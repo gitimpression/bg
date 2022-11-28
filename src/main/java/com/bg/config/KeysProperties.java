@@ -11,4 +11,5 @@ public class KeysProperties {
     public static final String TOKEN_USER_ID_KEY = "userId";    // 用户id
     public static final String TOKEN_USERNAME_KEY = "username"; // 用户名
     public static final String TOKEN_ROLE_ID_KEY = "roleId";    // 用户角色id
+    public static final String USER_HEADER_IMG_PREFIX = "http://localhost:8081/upload/img/";
 }

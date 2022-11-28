@@ -31,4 +31,9 @@ public class UserServiceImpl implements UserService {
     public String getRoleName(Long id) {
         return userMapper.getRoleName(id);
     }
+
+    @Override
+    public boolean changeUserHeadImg(Long userId, String fileName) {
+        return userMapper.changeUserHeadImg(userId, fileName);
+    }
 }
