@@ -25,6 +25,7 @@
             </el-breadcrumb>
           </div> -->
           <router-view />
+          <ChangePass></ChangePass>
         </el-main>
       </el-container>
     </el-container>
@@ -36,6 +37,7 @@
 import Header from '@/components/header/Header.vue'
 import Aside from '@/components/aside/Aside.vue';
 import Welcome from '@/components/main/Welcome.vue';
+import ChangePass from '@/components/main/prof/ChangePass.vue'
 
 export default {
   name: "Home",
@@ -46,7 +48,8 @@ export default {
   components: {
     Aside,
     Header,
-    Welcome
+    Welcome,
+    ChangePass
   },
 };
 </script>

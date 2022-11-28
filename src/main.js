@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { initMenu } from './util/menus'// 初始化菜单
 import 'font-awesome/css/font-awesome.min.css' // 引入字体图标库
+import Bus from './util/bus'  // 事件总线，通信用
 
 // 公共请求
 import { getRequest, postRequest, putRequest, delRequest } from '@/util/api.js'
@@ -18,6 +19,7 @@ Vue.prototype.putRequest = putRequest
 Vue.prototype.delRequest = delRequest
 
 Vue.prototype.keysProperties = keysProperties  // 全局使用keysProperties
+Vue.prototype.Bus = Bus  // 事件总线，通信用
 
 Vue.config.productionTip = false
 
@@ -34,7 +36,7 @@ router.beforeEach((to, from, next) => {
     //     }
     //   }
     // })
-    if (to.path != '/') {  // 不是前往登录页  初始化菜单
+    if (to.path != '/') {  // 不是前往登录页  初始化菜单dsa
       initMenu(router, store)
     }
   } else if (to.path != '/') {  // 未登录 访问的不是登录页
@@ -42,6 +44,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+
 
 
 new Vue({

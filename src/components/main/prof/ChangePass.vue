@@ -5,8 +5,12 @@
 </template>
 
 <script>
+
 export default {
-  name: "ChangePass"
+  name: "ChangePass",
+  mounted(){
+    
+  }
 }
 </script>
 

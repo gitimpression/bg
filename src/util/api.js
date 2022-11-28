@@ -6,7 +6,14 @@ import router from "../router"
 // 请求拦截器
 axios.interceptors.request.use(config => {
     if(localStorage.getItem(keysProperties.tokenKey)){
-        config.headers[keysProperties.tokenKey] = localStorage.getItem(keysProperties.tokenKey)
+        config.headers = {
+            "u_t" : localStorage.getItem(keysProperties.tokenKey),
+            "Content-type" : "application/json;charset=UTF-8"
+        }
+    }else{
+        config.headers = {
+            "Content-type" : "application/json;charset=UTF-8"
+        }
     }
     return config
 }, error => {
@@ -16,7 +23,7 @@ axios.interceptors.request.use(config => {
 // 响应拦截器 返回处理正确的结果，错误给出提示不返回data
 axios.interceptors.response.use(response => {// axios 的 response
     if(response.status !== 200 && response.data.code !== 200){
-        Message.error(res.msg)
+        Message.error("error：" + res.msg) // 区别普通消息
         return
     }
     return response.data;// ComRet 对象
@@ -29,7 +36,7 @@ axios.interceptors.response.use(response => {// axios 的 response
 
 let baseUrl = ''
 
-export const getRequest = (url, params = {}) => {
+export const getRequest = (url, params) => {
     return axios({
         method: "GET",
         url: baseUrl + url,
@@ -37,15 +44,15 @@ export const getRequest = (url, params = {}) => {
     })
 }
 
-export const postRequest = (url, params = {}) => {
+export const postRequest = (url, params) => {
     return axios({
         method: "POST",
         url: baseUrl + url,
-        data: params
+        data: params,
     })
 }
 
-export const putRequest = (url, params = {}) => {
+export const putRequest = (url, params) => {
     return axios({
         method: "PUT",
         url: baseUrl + url,
@@ -53,7 +60,7 @@ export const putRequest = (url, params = {}) => {
     })
 }
 
-export const delRequest = (url, params = {}) => {
+export const delRequest = (url, params) => {
     return axios({
         method: "DELETE",
         url: baseUrl + url,

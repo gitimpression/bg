@@ -33,6 +33,7 @@
 
 <script>
 import keysProperties from "@/config/keysProperties";
+import Bus from '@/util/bus'
 import { getRequest } from "@/util/api";
 export default {
   name: "Header",
@@ -88,7 +89,10 @@ export default {
     },
   },
   mounted() {
-    getRequest("/api/user/info").then((res) => {
+    Bus.$on("headerUserInfo", user => { // 个人信息同步Basic组件
+      this.user = user
+    }),
+    getRequest("/api/user").then((res) => {
       if (res.code == 200) {
         this.user = res.data.user;
         localStorage.setItem(keysProperties.userInfoKey,JSON.stringify(this.user))
@@ -97,6 +101,9 @@ export default {
           message: res.msg,
           type: "warning",
         });
+        setTimeout(() => {
+          this.$router.push('/')
+        })
       }
     });
   },

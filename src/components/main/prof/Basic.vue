@@ -9,7 +9,7 @@
             :model="editUser"
             label-width="80px"
           >
-            <el-form-item label="用户头像">
+            <el-form-item label="头像">
               <el-image
                 :src="editUser.headImg"
                 class="headImg"
@@ -20,27 +20,13 @@
                   加载中<span class="dot">...</span>
                 </div>
               </el-image>
-              <el-upload
+              <el-button
                 class="uploadBtn"
-                ref="upload"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :auto-upload="false"
-                :file-list="fileList"
-                list-type="picture"
+                size="small"
+                @click="centerDialogVisible = true"
               >
-                <el-button slot="trigger" size="small" type="primary"
-                  >选取文件</el-button
-                >
-                <el-button
-                  style="margin-left: 10px"
-                  size="small"
-                  type="success"
-                  @click="submitUpload"
-                  >上传到服务器</el-button
-                >
-              </el-upload>
+                更换头像
+              </el-button>
             </el-form-item>
             <el-form-item label="用户名" prop="username">
               <el-input v-model="editUser.username"></el-input>
@@ -79,12 +65,54 @@
             <el-form-item label="创建时间">
               <div>{{ editUser.createTime }}</div>
             </el-form-item>
-            <el-button @click="show()" :disabled="!isChange()"
+            <el-button @click="saveChange()" :disabled="!isChange()"
               >保存修改</el-button
             >
           </el-form>
         </el-col>
       </el-row>
+      <el-dialog
+        title="头像上传"
+        :visible.sync="centerDialogVisible"
+        width="50%"
+        center
+        :show-close="false"
+        :close-on-press-escape="false"
+        :close-on-click-modal="false"
+      >
+        <div class="dialogBody">
+          <!-- <div class="oldHeadImg">
+          <img :src="editUser.headImg" class="previewImg"/>
+          <div class="headImgText">
+            原头像
+          </div>
+        </div> -->
+          <div class="newHeadImg">
+            <el-upload
+              class="uploader"
+              action="/api/upload/img"
+              :show-file-list="false"
+              :on-success="uploadSuccess"
+              :headers="uploadHeaders"
+              :before-upload="beforeUpload"
+              title="点击选取新头像"
+            >
+              <img v-if="uploadImgUrl" :src="uploadImgUrl" class="previewImg" />
+              <i v-else class="el-icon-plus uploader-icon"></i>
+            </el-upload>
+            <!-- <div class="headImgText">
+          新头像
+        </div> -->
+          </div>
+        </div>
+
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="saveHeadImg()"
+            >保存并使用</el-button
+          >
+          <el-button @click="noSaveHeadImg()">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -92,7 +120,9 @@
 <script>
 import keysProperties from "@/config/keysProperties";
 import validator from "@/util/validator";
-import { getRequest, postRequest } from "@/util/api";
+import { postRequest } from "@/util/api";
+import Bus from '@/util/bus'
+
 import axios from "axios";
 export default {
   name: "Basic",
@@ -104,6 +134,11 @@ export default {
       userStatusData: [],
       roleName: "",
       fileList: [],
+      centerDialogVisible: false,
+      uploadImgUrl: "",
+      uploadHeaders: {
+        u_t: localStorage.getItem(keysProperties.tokenKey),
+      },
       rules: {
         username: [
           {
@@ -154,7 +189,12 @@ export default {
     });
   },
   methods: {
-    show() {
+    say() {
+      console.log(111);
+      return false;
+    },
+    // 修改用户信息
+    saveChange() {
       this.$refs.basicForm.validate((vaild) => {
         if (vaild) {
           console.log("验证通过");
@@ -163,15 +203,53 @@ export default {
         }
       });
     },
+    // 头像上传成功
+    uploadSuccess(res, file) {
+      console.log(res.data.fileName);
+      this.$message({
+        message: res.msg,
+        type: "success",
+      });
+      // this.uploadImgUrl = URL.createObjectURL(file.raw);
+      this.uploadImgUrl = keysProperties.userHeaderImgPrefix + res.data.fileName  // 含前缀http://...
+
+    },
+    // 上传之前处理
+    beforeUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 1;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 1MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    // 开始上传
     submitUpload() {
       this.$refs.upload.submit();
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    // 保存头像
+    async saveHeadImg(){
+      // 保存并更新本地信息
+      postRequest("/api/user/headImg", this.uploadImgUrl).then(res => {
+        console.log(res);
+        let img = res.data.headImg.replace(/\"/g, "");  // 去除双引号 decodeURIComponent
+        localStorage.removeItem(keysProperties.userInfoKey)
+        localStorage.setItem(keysProperties.userInfoKey, JSON.stringify(this.user))
+        this.user.headImg = img
+        this.editUser.headImg = img
+        // TODO 通知header组件用户信息发生变化
+        Bus.$emit('headerUserInfo', this.user)  // 个人信息同步到Header组件
+      })
+      this.centerDialogVisible = false
     },
-    handlePreview(file) {
-      console.log(file);
+    // 取消保存
+    noSaveHeadImg(){
+      this.centerDialogVisible = false
     },
+    // 个人信息发生变化
     isChange() {
       return (
         this.user.username != this.editUser.username ||
@@ -195,6 +273,40 @@ export default {
 .uploadBtn {
   display: inline-block;
   width: auto;
-  padding-left: 4px;
+  margin-left: 4px;
+}
+.uploader {
+  border-radius: 4px;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  border: 1px solid rgb(227, 227, 227);
+}
+.uploader-icon {
+  width: 200px;
+  height: 200px;
+  font-size: 28px;
+  line-height: 200px;
+  color: rgb(140, 147, 157);
+}
+.previewImg {
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+}
+.dialogBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.oldHeadImg,
+.newHeadImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.headImgText {
+  margin-top: 4px;
+  text-align: center;
 }
 </style>
