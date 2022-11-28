@@ -3,9 +3,8 @@ package com.bg.util;
 import com.bg.config.KeysProperties;
 import com.bg.entity.User;
 import io.jsonwebtoken.*;
-import org.springframework.util.StringUtils;
-
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -41,15 +40,41 @@ public class JWTUtil {
     }
 
     /**
+     * 从 headers 获取用户 token，token 转换成 Claims 以便获取用户 id 和 role id
+     * @param headers 请求的头部信息
+     * @return Claims
+     */
+    public static Claims parse(Map<String,String> headers) {
+        String token = headers.get(KeysProperties.TOKEN_KEY);
+        JwtParser jwtParser = Jwts.parser();
+        return jwtParser.setSigningKey(SECRET).parseClaimsJws(token).getBody();
+    }
+
+    /**
      * 将 token 转换成 Claims 以便获取用户 id 和 role
-     * @param token token
+     * @param token 登录之后派发的令牌
      * @return Claims
      */
     public static Claims parse(String token) {
-        if (StringUtils.isEmpty(token)) {// 没有token
-            return null;
-        }
         JwtParser jwtParser = Jwts.parser();
         return jwtParser.setSigningKey(SECRET).parseClaimsJws(token).getBody();
+    }
+
+    /**
+     * 将token转换成 Claims 从中获取存放的对应令牌信息 如 用户id
+     * @param token 登录之后派发的令牌
+     * @return Claims
+     */
+    public static String claims(String token, String key) {
+        return parse(token).get(key).toString();
+    }
+
+    /**
+     * 将token转换成 Claims 从中获取存放的对应令牌信息 如 用户id
+     * @param headers 请求的头部信息
+     * @return Claims
+     */
+    public static String claims(Map<String,String > headers, String key) {
+        return parse(headers).get(key).toString();
     }
 }
