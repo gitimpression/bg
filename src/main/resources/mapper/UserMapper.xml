@@ -19,11 +19,15 @@
         `id`,`username`,`head_img`,`role_id`,`user_status`,`create_time`,`login_time`,`email`,`birthday`,`gender`
     </sql>
     <select id="getUserById" resultMap="BaseColumnMap">
-        select <include refid="noUserPwdColumn" /> from `user` where id = #{id}
+        select
+        <include refid="noUserPwdColumn"/>
+        from `user` where id = #{id}
     </select>
 
     <select id="login" resultMap="BaseColumnMap">
-        select <include refid="noUserPwdColumn" /> from `user` where username = #{username} and password = #{password}
+        select
+        <include refid="noUserPwdColumn"/>
+        from `user` where username = #{username} and password = #{password}
     </select>
 
     <select id="getRoleName" resultType="string">
@@ -31,7 +35,71 @@
     </select>
 
     <update id="changeUserHeadImg">
-        update `user` set `head_img` = #{head_img} where `id` = #{user_id}
+        update `user` set `head_img` = #{head_img} where `id` = #{id}
     </update>
 
+    <update id="changeUserPassword">
+        update `user` set `password` = #{password} where `id` = #{id}
+    </update>
+
+    <update id="updateUser" parameterType="User">
+        update `user` set
+        <trim suffixOverrides=",">
+            <if test="username != null and username != ''">
+                `username` =
+                case
+                when `username` != #{username}
+                then #{username}
+                else `username`
+                end
+                ,
+            </if>
+            <if test="password != null and password != ''">
+                `password` =
+                case
+                when `password` != #{password}
+                then #{password}
+                else `password`
+                end
+                ,
+            </if>
+            <if test="roleId != null and roleId != ''">
+                `role_id` =
+                case
+                when `role_id` != #{roleId}
+                then #{roleId}
+                else `role_id`
+                end
+                ,
+            </if>
+            <if test="userStatus != null and userStatus != ''">
+                `userStatus` =
+                case
+                when `user_status` != #{userStatus}
+                then #{userStatus}
+                else `user_status`
+                end
+                ,
+            </if>
+            <if test="birthday != null and birthday != ''">
+                `birthday` =
+                case
+                when `birthday` != #{birthday}
+                then #{birthday}
+                else `birthday`
+                end
+                ,
+            </if>
+            <if test="gender != null and gender != ''">
+                `gender` =
+                case
+                when `gender` != #{gender}
+                then #{gender}
+                else `gender`
+                end
+                ,
+            </if>
+        </trim>
+        where `id` = #{id}
+    </update>
 </mapper>

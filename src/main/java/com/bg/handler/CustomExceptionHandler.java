@@ -26,7 +26,6 @@ public class CustomExceptionHandler {
         log.error("line: " + stackTraceElement.getLineNumber());    // 行数
         log.error("msg: " + ex.getMessage());       // 信息
         log.error("stack trace: " + ex.toString()); // 堆栈信息
-        ex.printStackTrace();
         return ComRet.fail(ex.getMessage());
     }
 }

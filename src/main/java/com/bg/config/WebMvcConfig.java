@@ -26,6 +26,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         InterceptorRegistration interceptor = registry.addInterceptor(new UserLoginInterceptor());
         interceptor.addPathPatterns("/**")              // 拦截所有请求
                 .excludePathPatterns("/verifyCodeImg")  // 放行验证码请求
-                .excludePathPatterns("/user/login");    // 放行登录请求
+                .excludePathPatterns("/user/login")     // 放行登录请求
+                .excludePathPatterns("/**/*.png","/**/*.jpg","/**/*.jpeg",
+                        "/**/*.PNG","/**/*.JPG","/**/*.JPEG");    // 放行图片资源请求
     }
 }

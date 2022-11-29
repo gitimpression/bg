@@ -1,6 +1,7 @@
 package com.bg.service.impl;
 
 import com.bg.entity.User;
+import com.bg.handler.CustomException;
 import com.bg.mapper.UserMapper;
 import com.bg.service.UserService;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
     @Override
-    public User getUserById(Integer id) {
+    public User getUserById(Long id) {
         return userMapper.getUserById(id);
     }
 
@@ -36,4 +37,15 @@ public class UserServiceImpl implements UserService {
     public boolean changeUserHeadImg(Long userId, String fileName) {
         return userMapper.changeUserHeadImg(userId, fileName);
     }
+
+    @Override
+    public long updateUser(User user) {
+        return userMapper.updateUser(user);
+    }
+
+    @Override
+    public boolean changeUserPassword(Long userId, String password) {
+        return userMapper.changeUserPassword(userId, password);
+    }
+
 }

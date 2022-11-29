@@ -18,12 +18,12 @@ logging:
   level:
     com:
       bg: DEBUG #  作为 package（包）的前缀来设置日志级别。
-  file:
-    max-size: 2MB  # 每个人文件最多 10MB
-    max-history: 7  # 文件保存一周
-    total-size-cap: 1GB  # 所有内容上线1GB
-    path: E:/bg_log/logs # 配置日志输出的文件名，也可以配置文件名的绝对路径。配置日志的路径。如果没有配置logging.file,Spring Boot 将默认使用spring.log作为文件名。
+#  file:
+#    max-size: 2MB  # 每个人文件最多 10MB
+#    max-history: 7  # 文件保存一周
+#    total-size-cap: 1GB  # 所有内容上线1GB
+#    path: E:/bg_log/logs # 配置日志输出的文件名，也可以配置文件名的绝对路径。配置日志的路径。如果没有配置logging.file,Spring Boot 将默认使用spring.log作为文件名。
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %msg %cyan(%logger{5}).%M\(%F:%L\)%n' # 控制台输出的日志格式
-    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'    # 指定文件中日志输出的格式
+#    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'    # 指定文件中日志输出的格式
     level: '%5p'  # 定义渲染不同级别日志的格式。默认是%5p.
