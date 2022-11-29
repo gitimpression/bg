@@ -23,7 +23,7 @@
               <el-button
                 class="uploadBtn"
                 size="small"
-                @click="centerDialogVisible = true"
+                @click="changeUserHeadImgDialogVisible = true"
               >
                 更换头像
               </el-button>
@@ -34,6 +34,7 @@
             <el-form-item label="性别">
               <el-radio-group v-model="editUser.gender">
                 <el-radio
+                  :input="isChange()"
                   v-for="item in genderData"
                   :label="item.valueId"
                   :key="item.value"
@@ -41,17 +42,19 @@
                 >
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="生日">
+            <el-form-item label="生日" prop="birthday">
               <el-date-picker
                 value-format="yyyy-MM-dd"
-                v-model="user.birthday"
+                v-model="editUser.birthday"
                 type="date"
                 placeholder="选择日期"
               >
               </el-date-picker>
             </el-form-item>
             <el-form-item label="账号状态">
-              <div>{{ userStatus }}</div>
+              <div :class="userStatusClass">
+                {{ userStatus }}
+              </div>
             </el-form-item>
             <el-form-item label="身份">
               <div>{{ roleName }}</div>
@@ -65,15 +68,20 @@
             <el-form-item label="创建时间">
               <div>{{ editUser.createTime }}</div>
             </el-form-item>
-            <el-button @click="saveChange()" :disabled="!isChange()"
-              >保存修改</el-button
+            <el-button @click="saveChange()" :disabled="!userInfoIsChange"
+              >变化与保存</el-button
+            >
+            <el-button
+              @click="resetUserInfoDialog()"
+              :disabled="!userInfoIsChange"
+              >重置</el-button
             >
           </el-form>
         </el-col>
       </el-row>
       <el-dialog
         title="头像上传"
-        :visible.sync="centerDialogVisible"
+        :visible.sync="changeUserHeadImgDialogVisible"
         width="50%"
         center
         :show-close="false"
@@ -81,12 +89,6 @@
         :close-on-click-modal="false"
       >
         <div class="dialogBody">
-          <!-- <div class="oldHeadImg">
-          <img :src="editUser.headImg" class="previewImg"/>
-          <div class="headImgText">
-            原头像
-          </div>
-        </div> -->
           <div class="newHeadImg">
             <el-upload
               class="uploader"
@@ -100,9 +102,6 @@
               <img v-if="uploadImgUrl" :src="uploadImgUrl" class="previewImg" />
               <i v-else class="el-icon-plus uploader-icon"></i>
             </el-upload>
-            <!-- <div class="headImgText">
-          新头像
-        </div> -->
           </div>
         </div>
 
@@ -113,6 +112,11 @@
           <el-button @click="noSaveHeadImg()">取 消</el-button>
         </span>
       </el-dialog>
+      <UserInfoChangeDialog
+        :beforeUser="user"
+        :afterUser="editUser"
+        :dGenderData="genderData"
+      ></UserInfoChangeDialog>
     </div>
   </div>
 </template>
@@ -121,7 +125,8 @@
 import keysProperties from "@/config/keysProperties";
 import validator from "@/util/validator";
 import { postRequest } from "@/util/api";
-import Bus from '@/util/bus'
+import Bus from "@/util/bus";
+import UserInfoChangeDialog from "@/components/main/prof/basic/children/UserInfoChangeDialog.vue";
 
 import axios from "axios";
 export default {
@@ -132,9 +137,10 @@ export default {
       editUser: {},
       genderData: [],
       userStatusData: [],
+      userInfoIsChange: false,
       roleName: "",
       fileList: [],
-      centerDialogVisible: false,
+      changeUserHeadImgDialogVisible: false,
       uploadImgUrl: "",
       uploadHeaders: {
         u_t: localStorage.getItem(keysProperties.tokenKey),
@@ -152,10 +158,22 @@ export default {
             trigger: "blur",
           },
         ],
+        birthday: [
+        {
+            validator: validator.uBirthday,
+            trigger: "blur",
+          },
+        ]
       },
     };
   },
   computed: {
+    userStatusClass() {
+      return {
+        normal: this.user.userStatus === 1,
+        abnormal: this.user.userStatus === 2,
+      };
+    },
     // valueId -->> value
     userStatus() {
       let value;
@@ -189,34 +207,50 @@ export default {
     });
   },
   methods: {
-    say() {
-      console.log(111);
-      return false;
+    resetUserInfoDialog() {
+      this.editUser = JSON.parse(JSON.stringify(this.user));
     },
+
+    // 个人信息发生变化
+    isChange() {
+      this.userInfoIsChange =
+        this.user.username != this.editUser.username ||
+        this.user.gender != this.editUser.gender ||
+        this.user.email != this.editUser.email ||
+        this.user.birthday != this.editUser.birthday ||
+        this.user.headImg != this.editUser.headImg;
+    },
+
     // 修改用户信息
     saveChange() {
       this.$refs.basicForm.validate((vaild) => {
         if (vaild) {
-          console.log("验证通过");
+          Bus.$emit("UserInfoChangeDialogVisible", true);
         } else {
-          console.log("验证不通过");
+          this.$message({
+            message: "请检查信息格式是否符合规范",
+            type: "warning",
+          });
         }
       });
     },
     // 头像上传成功
     uploadSuccess(res, file) {
-      console.log(res.data.fileName);
       this.$message({
         message: res.msg,
         type: "success",
       });
       // this.uploadImgUrl = URL.createObjectURL(file.raw);
-      this.uploadImgUrl = keysProperties.userHeaderImgPrefix + res.data.fileName  // 含前缀http://...
-
+      this.uploadImgUrl =
+        keysProperties.userHeaderImgPrefix + res.data.fileName; // 含前缀http://...
+      this.user.headImg = this.uploadImgUrl;
     },
     // 上传之前处理
     beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 1;
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
@@ -231,35 +265,35 @@ export default {
       this.$refs.upload.submit();
     },
     // 保存头像
-    async saveHeadImg(){
+    async saveHeadImg() {
       // 保存并更新本地信息
-      postRequest("/api/user/headImg", this.uploadImgUrl).then(res => {
-        console.log(res);
-        let img = res.data.headImg.replace(/\"/g, "");  // 去除双引号 decodeURIComponent
-        localStorage.removeItem(keysProperties.userInfoKey)
-        localStorage.setItem(keysProperties.userInfoKey, JSON.stringify(this.user))
-        this.user.headImg = img
-        this.editUser.headImg = img
+      postRequest("/api/user/headImg", this.uploadImgUrl).then((res) => {
+        let img = res.data.headImg; // 去除双引号 decodeURIComponent
+        localStorage.setItem(
+          keysProperties.userInfoKey,
+          JSON.stringify(this.user)
+        );
+        this.user.headImg = img;
+        this.editUser.headImg = img;
         // TODO 通知header组件用户信息发生变化
-        Bus.$emit('headerUserInfo', this.user)  // 个人信息同步到Header组件
-      })
-      this.centerDialogVisible = false
+        Bus.$emit("headerUserInfo", this.user); // 个人信息同步到Header组件
+      });
+      this.changeUserHeadImgDialogVisible = false;
     },
     // 取消保存
-    noSaveHeadImg(){
-      this.centerDialogVisible = false
-    },
-    // 个人信息发生变化
-    isChange() {
-      return (
-        this.user.username != this.editUser.username ||
-        this.user.email != this.editUser.email ||
-        this.user.birthday != this.editUser.birthday ||
-        this.user.headImg != this.editUser.headImg
-      );
+    noSaveHeadImg() {
+      this.changeUserHeadImgDialogVisible = false;
     },
   },
-  mounted() {},
+  components: {
+    UserInfoChangeDialog,
+  },
+  mounted() {
+    Bus.$on("headerUserInfo", (user) => {
+      // 个人信息同步Basic组件
+      this.user = user;
+    });
+  },
 };
 </script>
 
@@ -308,5 +342,11 @@ export default {
 .headImgText {
   margin-top: 4px;
   text-align: center;
+}
+.abnormal {
+  color: red;
+}
+.normal {
+  color: green;
 }
 </style>

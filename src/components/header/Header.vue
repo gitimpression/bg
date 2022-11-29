@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="title">
-      <h3>校办公系统</h3>
+      <h3>校园办公系统</h3>
     </div>
     <div class="user">
       <el-dropdown trigger="click" 
@@ -92,9 +92,10 @@ export default {
     Bus.$on("headerUserInfo", user => { // 个人信息同步Basic组件
       this.user = user
     }),
-    getRequest("/api/user").then((res) => {
+    getRequest("/api/user").then(res => {
       if (res.code == 200) {
         this.user = res.data.user;
+        console.log();
         localStorage.setItem(keysProperties.userInfoKey,JSON.stringify(this.user))
       } else {
         this.$message({

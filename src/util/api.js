@@ -29,7 +29,6 @@ axios.interceptors.response.use(response => {// axios 的 response
     return response.data;// ComRet 对象
 }, error => {
     Message.error('请求失败，code：' + error.code + ",message：" + error.message)
-    router.replace('/')
     return
 })
 
