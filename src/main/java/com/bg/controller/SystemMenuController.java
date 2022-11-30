@@ -1,14 +1,13 @@
 package com.bg.controller;
 
+import com.bg.anno.Log;
 import com.bg.config.KeysProperties;
 import com.bg.entity.SystemMenu;
 import com.bg.service.SystemMenuService;
 import com.bg.util.ComRet;
 import com.bg.util.JwtUtil;
 import com.bg.util.SystemMenusUtil;
-import io.jsonwebtoken.Claims;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +26,9 @@ public class SystemMenuController {
     @Resource
     private SystemMenuService systemMenuService;
 
-
-    /**
-     * 返回可使用菜单信息
-     * @param headers 请求头
-     * @return return
-     */
+    @Log("获取菜单列表")
     @GetMapping("/menu")
     public ComRet getSysMenu(@RequestHeader Map<String, String> headers) {
-
         long roleId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_ROLE_ID_KEY));
         // 查询数据
         List<SystemMenu> menus = systemMenuService.getSystemMenuByRoleId(roleId)

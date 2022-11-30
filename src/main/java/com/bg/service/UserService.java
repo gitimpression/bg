@@ -1,6 +1,7 @@
 package com.bg.service;
 
 import com.bg.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author ctp
@@ -10,7 +11,8 @@ public interface UserService {
     User getUserById(Long id);
     User login(String username, String password);
     String getRoleName(Long id);
-    boolean changeUserHeadImg(Long userId, String fileName);
+    boolean updateUserHeadImg(Long userId, String fileName);
     long updateUser(User user);
-    boolean changeUserPassword(Long userId, String password);
+    boolean updateUserPassword(Long userId, String password);
+    boolean updateUserLoginTime(@Param("id") Long userId, String loginTime);
 }

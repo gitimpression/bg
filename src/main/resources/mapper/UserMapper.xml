@@ -21,7 +21,7 @@
     <select id="getUserById" resultMap="BaseColumnMap">
         select
         <include refid="noUserPwdColumn"/>
-        from `user` where id = #{id}
+        from `user` where id = #{userId}
     </select>
 
     <select id="login" resultMap="BaseColumnMap">
@@ -31,15 +31,18 @@
     </select>
 
     <select id="getRoleName" resultType="string">
-        select `name` from `role` where id = #{id}
+        select `name` from `role` where id = #{userId}
     </select>
 
-    <update id="changeUserHeadImg">
-        update `user` set `head_img` = #{head_img} where `id` = #{id}
+    <update id="updateUserHeadImg">
+        update `user` set `head_img` = #{head_img} where `id` = #{userId}
     </update>
 
-    <update id="changeUserPassword">
+    <update id="updateUserPassword">
         update `user` set `password` = #{password} where `id` = #{id}
+    </update>
+    <update id="updateUserLoginTime">
+        update `user` set `login_time` = #{loginTime} where `id` = #{userId}
     </update>
 
     <update id="updateUser" parameterType="User">
@@ -100,6 +103,6 @@
                 ,
             </if>
         </trim>
-        where `id` = #{id}
+        where `id` = #{userId}
     </update>
 </mapper>

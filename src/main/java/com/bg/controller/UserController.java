@@ -1,17 +1,13 @@
 package com.bg.controller;
 
+import com.bg.anno.Log;
 import com.bg.config.KeysProperties;
 import com.bg.entity.User;
 import com.bg.service.UserService;
-import com.bg.util.ComRet;
-import com.bg.util.JwtUtil;
-import com.bg.util.UserUtil;
-import com.bg.util.VerifyCodeImg;
-import io.jsonwebtoken.Claims;
+import com.bg.util.*;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -25,12 +21,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    /**
-     * 获取用户信息
-     *
-     * @param headers 请求头以便获取token
-     * @return 用户信息
-     */
+    @Log("获取用户信息")
     @GetMapping("/user")
     public ComRet getUserInfo(@RequestHeader Map<String, String> headers) {
         Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
@@ -38,14 +29,9 @@ public class UserController {
         return ComRet.ok("查询成功").add("user", user);
     }
 
-    /**
-     * 修改用户信息
-     *
-     * @param headers 请求头以便获取token
-     * @return 用户信息
-     */
+    @Log("修改用户基本信息")
     @PostMapping("/user")
-    public ComRet modifyUserInfo(@RequestHeader Map<String, String> headers,
+    public ComRet updateUserInfo(@RequestHeader Map<String, String> headers,
                                  @RequestBody User user) {
 
         // 只能修改可以修改的
@@ -88,18 +74,13 @@ public class UserController {
         }
     }
 
-    /**
-     * 修改头像
-     *
-     * @param headers 请求头以便获取token
-     * @return 头像URL
-     */
+    @Log("修改用户头像")
     @PostMapping("/user/headImg")
-    public ComRet changeUserInfo(@RequestHeader Map<String, String> headers,
+    public ComRet updateUserHeadImg(@RequestHeader Map<String, String> headers,
                                  @RequestBody String fileName) {
         Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
         fileName = fileName.replaceAll("\"", "");
-        boolean b = userService.changeUserHeadImg(userId, fileName);
+        boolean b = userService.updateUserHeadImg(userId, fileName);
         if (b) {
             return ComRet.ok("修改头像成功").add("headImg", fileName);
         } else {
@@ -107,14 +88,9 @@ public class UserController {
         }
     }
 
-    /**
-     * 修改密码
-     *
-     * @param headers 请求头以便获取token
-     * @return  return
-     */
+    @Log("修改用户密码")
     @PostMapping("/user/password")
-    public ComRet changeUserPassword(@RequestHeader Map<String, String> headers,
+    public ComRet updateUserPassword(@RequestHeader Map<String, String> headers,
                                      @RequestBody Map<String,String> map) {
         String password = map.get(KeysProperties.USER_PASSWORD_KEY);
         if (StringUtils.isEmpty(password)){
@@ -124,20 +100,14 @@ public class UserController {
             return ComRet.fail("修改失败,密码格式不正确");
         }
         Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
-        if (userService.changeUserPassword(userId, DigestUtils.md5DigestAsHex(password.getBytes()))){
+        if (userService.updateUserPassword(userId, DigestUtils.md5DigestAsHex(password.getBytes()))){
             return ComRet.ok("修改密码成功");
         }else{
             return ComRet.fail("修改失败");
         }
     }
 
-    /**
-     * 用户登录
-     *
-     * @param map     请求体
-     * @param session session
-     * @return return
-     */
+    @Log("用户登录")
     @PostMapping("/user/login")
     public ComRet login(@RequestBody Map<String, String> map, HttpSession session) {
         String username = map.get("username");
@@ -171,27 +141,18 @@ public class UserController {
         if (StringUtils.isEmpty(token)) {   // 创建token失败
             return ComRet.fail("创建登录状态失败");
         }
+        // 更新登录时间
+        userService.updateUserLoginTime(loginUser.getId(), DateTimeUtil.getDataTime());
         return ComRet.ok("登录成功").add("data", token);
     }
 
-    /**
-     * 用户退出登录
-     *
-     * @param headers headers
-     * @return return
-     */
+    @Log("用户退出登录")
     @PostMapping("/user/logout")
-    public ComRet logout(@RequestHeader Map<String, String> headers) {
-        // TODO 日志记录
+    public ComRet logout() {
         return ComRet.ok("退出登录成功");
     }
 
-    /**
-     * 获取用户roleId对应的角色名
-     *
-     * @param headers 请求头
-     * @return 角色名
-     */
+    @Log("获取用户角色名")
     @GetMapping("/user/role")
     public ComRet getRole(@RequestHeader Map<String, String> headers) {
         String roleId = JwtUtil.claims(headers, KeysProperties.TOKEN_ROLE_ID_KEY);
@@ -199,17 +160,4 @@ public class UserController {
         return ComRet.ok("查询成功").add("data", name);
     }
 
-    /**
-     * 获取图片验证码
-     *
-     * @param session session存放验证码值
-     * @return return
-     */
-    @GetMapping("/verifyCodeImg")
-    public ComRet getVerifyCodeImg(HttpSession session) {
-        VerifyCodeImg codeImg = new VerifyCodeImg();
-        session.setAttribute("verifyCode", codeImg.getCode());
-        session.setMaxInactiveInterval(60); // 60秒失效
-        return ComRet.ok().add("data", codeImg.getImg());
-    }
 }

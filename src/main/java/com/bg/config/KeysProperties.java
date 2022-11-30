@@ -16,4 +16,6 @@ public class KeysProperties {
 
 
     public static final String USER_HEADER_IMG_PREFIX = "http://localhost:8081/upload/img/";
+
+    public static final String SQL_USER_LOG_METHOD_LOGIN = "com.bg.controller.UserController.login";
 }

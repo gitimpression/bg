@@ -1,0 +1,32 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.UserLogMapper">
+
+    <sql id="SimpleUserLogColumn">
+        `create_time`,`operation`,`ip`
+    </sql>
+    <insert id="insertUserLog" parameterType="UserLog">
+        insert into `user_log` (`id`,`user_id`,`method`,`params`,`create_time`,`consume_time`,`operation`,`ip`)
+        values (null, #{userId}, #{method},#{params},#{createTime},#{consumeTime},#{operation},#{ip});
+    </insert>
+
+    <select id="getSimpleUserLog" resultType="SimpleUserLog">
+        select <include refid="SimpleUserLogColumn"/> from `user_log` where `user_id` = #{userId} and `method` != #{method}
+    </select>
+
+    <select id="getAllUserLogPage" resultType="UserLog">
+        select * from `user_log`
+    </select>
+
+    <select id="getUserLogPage" resultType="UserLog">
+        select * from `user_log` where `user_id` = #{userId}
+    </select>
+
+    <select id="getSimpleUserLoginLog" resultType="SimpleUserLog">
+        select <include refid="SimpleUserLogColumn"/> from `user_log`
+        where `method` = #{method}
+        and `user_id` = #{userId}
+    </select>
+</mapper>

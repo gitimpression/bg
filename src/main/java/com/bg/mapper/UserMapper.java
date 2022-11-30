@@ -8,10 +8,10 @@ import org.apache.ibatis.annotations.Param;
  * @date 2022/11/22 4:01
  */
 public interface UserMapper {
-    User getUserById(@Param("id") Long id);
+    User getUserById(@Param("userId") Long id);
     User login(@Param("username") String username, @Param("password") String password);
-    String getRoleName(Long id);
-    boolean changeUserHeadImg(@Param("id") Long userId, @Param("head_img") String fileName);
+    String getRoleName(@Param("userId") Long id);
+    boolean updateUserHeadImg(@Param("userId") Long userId, @Param("head_img") String fileName);
 
     /**
      * 选择性更新
@@ -19,5 +19,6 @@ public interface UserMapper {
      * @return return
      */
     Long updateUser(User user);
-    boolean changeUserPassword(@Param("id") Long userId, @Param("password") String password);
+    boolean updateUserPassword(@Param("userId") Long userId, @Param("password") String password);
+    boolean updateUserLoginTime(@Param("userId")Long userId, @Param("loginTime") String loginTime);
 }
