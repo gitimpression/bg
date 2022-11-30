@@ -52,12 +52,10 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item label="账号状态">
-              <div :class="userStatusClass">
-                {{ userStatus }}
-              </div>
+              <el-tag :type="userStatusClass">{{ userStatus }}</el-tag>
             </el-form-item>
             <el-form-item label="身份">
-              <div>{{ roleName }}</div>
+              <el-tag>{{ roleName }}</el-tag>
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="editUser.email"></el-input>
@@ -169,10 +167,12 @@ export default {
   },
   computed: {
     userStatusClass() {
-      return {
-        normal: this.user.userStatus === 1,
-        abnormal: this.user.userStatus === 2,
-      };
+      if(this.user.userStatus === 1){
+        return "success"
+      }
+      if(this.user.userStatus === 2){
+        return "danger"
+      }
     },
     // valueId -->> value
     userStatus() {

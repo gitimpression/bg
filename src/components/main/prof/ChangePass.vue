@@ -69,6 +69,7 @@ export default {
                 message: res.msg,
                 type: "success",
               });
+              this.$router.push("/home")
             } else {
               this.$message.error(res.msg);
             }
