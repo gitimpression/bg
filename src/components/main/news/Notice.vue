@@ -34,7 +34,7 @@
 
     <!-- 左侧 通知列表 -->
     <el-row :gutter="20">
-      <el-col :span="12" v-show="!publishFull">
+      <el-col :span="9" v-show="!publishFull">
         <NoticeList
           ref="noticeListRef"
           :page-info="pageInfo"
@@ -44,7 +44,7 @@
         <div class="pagination">
           <el-pagination
             v-show="!publishFull"
-            @size-change="getNotice"
+            @size-change="sizeChange"
             @current-change="handleCurrentChange"
             :current-page="pageNum"
             :page-size="pageSize"
@@ -57,10 +57,10 @@
         </div>
       </el-col>
       <!-- 右侧 通知详情      现实条件：不发布不操作时-->
-      <el-col :span="12" v-if="!publish && !batch">
+      <el-col :span="15" v-if="!publish && !batch">
         <el-row>
           <el-col :span="24">
-            <NoticeDetail ref="noticeDetailRef"></NoticeDetail>
+            <NoticeDetail ref="noticeDetailRef" @reloadNotice="getNotice"></NoticeDetail>
           </el-col>
         </el-row>
       </el-col>
@@ -97,6 +97,7 @@
                   <el-button type="primary" @click="doPublish">发布</el-button>
                   <el-button @click="noticeDraft">保存草稿</el-button>
                   <el-button @click="clearForm">清空</el-button>
+                  <el-button @click="clearDraft">清空草稿</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -140,6 +141,19 @@ export default {
     },
   },
   methods: {
+    clearDraft(){
+      if (confirm("清空草稿？")) {
+        localStorage.removeItem(keysProperties.noticeDraftKey)
+        this.$message({
+          message: "草稿已被清空",
+          type: "success"
+        })
+      }
+    },
+    sizeChange(val){
+      this.pageSize = val
+      this.getNotice()
+    },
     deleteNoticeBatch() {
       let list = this.$refs["noticeListRef"].checkList;
       if (list.length == 0) {
@@ -264,10 +278,11 @@ export default {
       if (res.code == 200) {
         this.noticePm = res.data.data
         this.$refs['noticeDetailRef'].deleteNoticePm = this.noticePm
+      }else{
+        this.$message.error(res.msg)
       }
-      console.log(res);
     }).catch(err => {
-      console.log(err);
+      this.$message.error(err)
     })
   },
   components: {

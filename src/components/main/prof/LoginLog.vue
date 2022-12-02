@@ -8,7 +8,7 @@
       <el-table-column prop="ip" label="ip地址"> </el-table-column>
     </el-table>
     <el-pagination
-      @size-change="getLog()"
+      @size-change="sizeChange"
       @current-change="handleCurrentChange"
       :current-page="pageNum"
       :page-sizes="[10, 20, 50, 100]"
@@ -32,6 +32,10 @@ export default {
     };
   },
   methods: {
+    sizeChange(val){
+      this.pageSize = val
+      this.getLog()
+    },
     handleCurrentChange(val){
       this.pageNum = val
       this.getLog()
@@ -51,7 +55,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          this.$message.error(err);
         });
     },
   },

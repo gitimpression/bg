@@ -12,12 +12,8 @@
             {{ notice.publisherName }}
           </div>
           <div v-if="deleteNoticePm" style="margin-left:10px">
-            <el-link type="danger">删除公告</el-link>
+            <el-link @click="deleteNotice(notice.id)">删除公告</el-link>
           </div>
-        </div>
-        <div class="visits">
-            <i class="el-icon-view visits-icon"></i>
-          {{ notice.visits }}
         </div>
       </div>
     </div>
@@ -26,6 +22,7 @@
 
 <script>
 import Bus from "@/util/bus";
+import { delRequest } from '@/util/api';
 export default {
   name: "NoticeDetail",
   data() {
@@ -33,6 +30,29 @@ export default {
       notice: {},
       deleteNoticePm: true
     };
+  },
+  methods:{
+    deleteNotice(id){
+      
+      if (confirm("确定删除公告？")) {
+        delRequest("/api/notice", {
+          id: id
+        }).then(res => {
+          if (res.code == 200) {
+            this.$message({
+              message: res.msg,
+              type: "success"
+            })
+            this.notice = {}
+            this.$emit("reloadNotice")
+          }else{
+            this.$message.error(res.msg)
+          }
+        }).catch(err => {
+          this.$message.error(err)
+        })
+      }
+    }
   },
   mounted() {
     Bus.$on("NoticeDetailShow", (notice) => {

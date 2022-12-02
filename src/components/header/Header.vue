@@ -63,6 +63,7 @@ export default {
                 localStorage.removeItem(keysProperties.tokenKey) // 清空token
                 localStorage.removeItem(keysProperties.userInfoKey) // 清空个人信息
                 localStorage.removeItem(keysProperties.noticeDraftKey) // 清空公告草稿
+                localStorage.removeItem(keysProperties.userVisitsNoticeList) // 清空浏览记录
                 this.$message({
                   message: res.msg,
                   type: "success",
