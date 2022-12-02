@@ -62,6 +62,7 @@ export default {
                 this.$store.state.routes = []// 清空路由
                 localStorage.removeItem(keysProperties.tokenKey) // 清空token
                 localStorage.removeItem(keysProperties.userInfoKey) // 清空个人信息
+                localStorage.removeItem(keysProperties.noticeDraftKey) // 清空公告草稿
                 this.$message({
                   message: res.msg,
                   type: "success",
