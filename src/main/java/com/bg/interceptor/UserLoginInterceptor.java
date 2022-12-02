@@ -3,6 +3,7 @@ package com.bg.interceptor;
 import com.bg.config.KeysProperties;
 import com.bg.handler.CustomException;
 import com.bg.util.JwtUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author ctp
  * @date 2022/11/27 22:09
  */
+@Component
 public class UserLoginInterceptor implements HandlerInterceptor {
 
     /**

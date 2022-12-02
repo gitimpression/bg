@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @Log("用户登录")
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ComRet login(@RequestBody Map<String, String> map, HttpSession session) {
         String username = map.get("username");
         String password = map.get("password");

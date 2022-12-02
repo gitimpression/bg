@@ -60,7 +60,6 @@ public class NoticeController {
     @PutMapping
     public ComRet insertNotice(@RequestHeader Map<String,String> headers,
                                @RequestBody Notice notice){
-        // TODO 权限校验
         if (notice == null){
             return ComRet.fail("参数有误");
         }
@@ -84,7 +83,6 @@ public class NoticeController {
     @Log("修改公告")
     @PostMapping
     public ComRet updateNotice(@RequestBody Notice notice){
-        // TODO 权限校验
         if (notice == null){
             return ComRet.fail("参数有误");
         }
@@ -115,7 +113,6 @@ public class NoticeController {
     @DeleteMapping("/batch")
     public ComRet deleteNoticeBatch(@RequestBody Map<String,List<Long>> body){
         List<Long> idList = body.get("idList");
-        // TODO 权限校验
         if (idList == null || idList.size() == 0){
             return ComRet.fail("参数有误");
         }

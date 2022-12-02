@@ -34,53 +34,24 @@ public class UserAspect {
     private UserLogService userLogService;
 
     /**
-     * 切入更新操作
+     * 切入UserController非查询动作
      */
-    @Pointcut("execution(* com.bg.controller.UserController.update*(..))")
-    public void afterUserControllerUpdate() {
-    }
-
-    /**
-     * 切入登录操作
-     */
-    @Pointcut("execution(* com.bg.controller.UserController.login(..))")
-    public void afterUserControllerLogin() {
-    }
-
-    /**
-     * 切入退出登录操作
-     */
-    @Pointcut("execution(* com.bg.controller.UserController.logout(..))")
-    public void afterUserControllerLogout() {
-    }
-
-    /**
-     * 切入UserController所有操作
-     */
-    @Pointcut("execution(* com.bg.controller.UserController.*(..))")
+    @Pointcut("execution(* com.bg.controller.UserController.*(..)) && !execution(* com.bg.controller.UserController.get*(..))")
     public void afterUserController() {
     }
 
     /**
-     * 切入NoticeController所有操作
+     * 切入NoticeController非查询动作
      */
-    @Pointcut("execution(* com.bg.controller.NoticeController.*(..))")
+    @Pointcut("execution(* com.bg.controller.NoticeController.*(..)) && !execution(* com.bg.controller.NoticeController.get*(..))")
     public void afterNoticeController() {
-    }
-
-    /**
-     * 系统菜单控制层切入点
-     */
-    @Pointcut("execution(* com.bg.controller.SystemMenuController.*(..))")
-    public void afterSystemMenuController() {
     }
 
     /**
      * 记录用户操作
      * 更新，登录，退出登录
      */
-    @Around("afterUserControllerUpdate() || afterUserControllerLogout() " +
-            "|| afterUserControllerLogin() || afterNoticeController()")
+    @Around("afterUserController() || afterNoticeController()")
     public Object aroundUserOperation(ProceedingJoinPoint pjp) throws Throwable {
         long beginTime = System.currentTimeMillis();
         Object result = pjp.proceed();
