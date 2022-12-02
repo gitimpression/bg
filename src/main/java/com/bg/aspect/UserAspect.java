@@ -55,10 +55,17 @@ public class UserAspect {
     }
 
     /**
-     * 切入所有操作
+     * 切入UserController所有操作
      */
     @Pointcut("execution(* com.bg.controller.UserController.*(..))")
     public void afterUserController() {
+    }
+
+    /**
+     * 切入NoticeController所有操作
+     */
+    @Pointcut("execution(* com.bg.controller.NoticeController.*(..))")
+    public void afterNoticeController() {
     }
 
     /**
@@ -72,7 +79,8 @@ public class UserAspect {
      * 记录用户操作
      * 更新，登录，退出登录
      */
-    @Around("afterUserControllerUpdate() || afterUserControllerLogout() || afterUserControllerLogin()")
+    @Around("afterUserControllerUpdate() || afterUserControllerLogout() " +
+            "|| afterUserControllerLogin() || afterNoticeController()")
     public Object aroundUserOperation(ProceedingJoinPoint pjp) throws Throwable {
         long beginTime = System.currentTimeMillis();
         Object result = pjp.proceed();

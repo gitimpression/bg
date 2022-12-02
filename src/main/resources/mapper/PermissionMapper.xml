@@ -1,0 +1,9 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.PermissionMapper">
+    <select id="getPermissionByUserId" resultType="com.bg.entity.Permission">
+        select `name` from `permission`
+    </select>
+</mapper>

@@ -33,7 +33,6 @@ public class UserLogServiceImpl implements UserLogService {
     @Override
     public PageInfo<SimpleUserLog> getSimpleUserLog(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);  // 查询前设置拦截,以便分页管理
-        Long start = (pageNum - 1) * Long.parseLong(pageSize.toString());
         List<SimpleUserLog> userLogList = userLogMapper.getSimpleUserLog(userId, KeysProperties.SQL_USER_LOG_METHOD_LOGIN);
         return new PageInfo<>(userLogList, 5);
     }
@@ -41,7 +40,6 @@ public class UserLogServiceImpl implements UserLogService {
     @Override
     public PageInfo<SimpleUserLog> getSimpleUserLoginLog(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        Long start = (pageNum - 1) * Long.parseLong(pageSize.toString());
         List<SimpleUserLog> userLogList = userLogMapper.getSimpleUserLoginLog(userId, KeysProperties.SQL_USER_LOG_METHOD_LOGIN);
         return new PageInfo<SimpleUserLog>(userLogList, 5);
     }
@@ -49,7 +47,6 @@ public class UserLogServiceImpl implements UserLogService {
     @Override
     public PageInfo<UserLog> getAllUserLogPage(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        Long start = (pageNum - 1) * Long.parseLong(pageSize.toString());
         List<UserLog> userLogList = userLogMapper.getAllUserLogPage(userId);
         return new PageInfo<>(userLogList, 5);
     }
@@ -57,7 +54,6 @@ public class UserLogServiceImpl implements UserLogService {
     @Override
     public PageInfo<UserLog> getUserLogPage(Long userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        Long start = (pageNum - 1) * Long.parseLong(pageSize.toString());
         List<UserLog> userLogList = userLogMapper.getUserLogPage(userId);
         return new PageInfo<>(userLogList, 5);
     }

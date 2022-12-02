@@ -27,8 +27,8 @@ public class UserLogController {
     @Resource
     private UserLogService userLogService;
 
-    @Log("查询所有用户的日志记录")
-    @GetMapping("/all")
+    @Log("查询用户的分页日志记录")
+    @GetMapping("/page")
     public ComRet getAllUserLogPage(@RequestHeader Map<String, String> headers,
                                  Integer pageNum, Integer pageSize) {
         if (pageNum == null || pageSize == null)

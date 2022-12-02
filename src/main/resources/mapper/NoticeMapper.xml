@@ -1,0 +1,65 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.NoticeMapper">
+    <sql id="BaseColumn">
+        `id`,`publisher_id`,`title`,`content`,`create_time`,`publisher_name`
+    </sql>
+
+    <resultMap id="BaseResultMap" type="Notice">
+        <id property="id" column="id" />
+        <result property="createTime" column="create_time" />
+        <result property="publisherId" column="publisher_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content"/>
+        <result property="visits" column="visits"/>
+        <result property="publisherName" column="publisher_name"/>
+    </resultMap>
+
+    <select id="getAllNoticePage" resultMap="BaseResultMap">
+        select `id`,`title`,`content`,`create_time`,`create_time`,`visits`,`publisher_name`
+        from `notice` order by `create_time` desc
+    </select>
+    <insert id="insertNotice">
+        insert into `notice`
+        (`id`,`publisher_id`,`title`,`content`,`create_time`,`publisher_name`,`visits`)
+        values (null,#{publisherId},#{title},#{content},#{createTime},#{publisherName},#{visits})
+    </insert>
+    <delete id="deleteNotice">
+        delete from `notice` where `id` = #{noticeId}
+    </delete>
+    <delete id="deleteNoticeBatch">
+        delete from `notice` where `id` in
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateNotice">
+        update `notice`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null || title != ''">
+                `title` = #{title},
+            </if>
+            <if test="content != null || content != ''">
+                `content` = #{content},
+            </if>
+        </trim>
+        where `id` = #{id}
+    </update>
+    <update id="updateNoticeVisits">
+        update `notice` set `visits` = `visits` + 1 where `id` = #{noticeId}
+    </update>
+
+    <select id="getNoticeById" resultType="Notice">
+        select `id`,`title`,`content`,`create_time`,`visits`,`publisher_name`
+        from `notice` where `id` = #{noticeId}
+    </select>
+    <select id="searchKeyword" resultMap="BaseResultMap">
+        select <include refid="BaseColumn"/>
+        from `notice`
+        where `title` like concat('%',#{keyword},'%')
+    </select>
+
+</mapper>

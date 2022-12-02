@@ -7,26 +7,33 @@
     <sql id="SimpleUserLogColumn">
         `create_time`,`operation`,`ip`
     </sql>
+
+    <sql id="UserLogColumn">
+        `id`,`user_id`,`method`,`params`,`create_time`,`consume_time`,`operation`,`ip`
+    </sql>
     <insert id="insertUserLog" parameterType="UserLog">
-        insert into `user_log` (`id`,`user_id`,`method`,`params`,`create_time`,`consume_time`,`operation`,`ip`)
+        insert into `user_log` (<include refid="UserLogColumn"/>)
         values (null, #{userId}, #{method},#{params},#{createTime},#{consumeTime},#{operation},#{ip});
     </insert>
 
     <select id="getSimpleUserLog" resultType="SimpleUserLog">
-        select <include refid="SimpleUserLogColumn"/> from `user_log` where `user_id` = #{userId} and `method` != #{method}
+        select <include refid="SimpleUserLogColumn"/>
+        from `user_log`
+        where `user_id` = #{userId} and `method` != #{method} order by `create_time` desc
     </select>
 
     <select id="getAllUserLogPage" resultType="UserLog">
-        select * from `user_log`
+        select <include refid="UserLogColumn"/> from `user_log` by `create_time` desc
     </select>
 
     <select id="getUserLogPage" resultType="UserLog">
-        select * from `user_log` where `user_id` = #{userId}
+        select * from `user_log` where `user_id` = #{userId} order by `create_time` desc
     </select>
 
     <select id="getSimpleUserLoginLog" resultType="SimpleUserLog">
         select <include refid="SimpleUserLogColumn"/> from `user_log`
         where `method` = #{method}
         and `user_id` = #{userId}
+        order by `create_time` desc
     </select>
 </mapper>

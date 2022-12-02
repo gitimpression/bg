@@ -103,6 +103,6 @@
                 ,
             </if>
         </trim>
-        where `id` = #{userId}
+        where `id` = #{id}
     </update>
 </mapper>

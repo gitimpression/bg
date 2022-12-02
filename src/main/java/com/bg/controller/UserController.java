@@ -3,6 +3,7 @@ package com.bg.controller;
 import com.bg.anno.Log;
 import com.bg.config.KeysProperties;
 import com.bg.entity.User;
+import com.bg.service.RolePermissionService;
 import com.bg.service.UserService;
 import com.bg.util.*;
 import org.springframework.util.DigestUtils;
@@ -17,12 +18,15 @@ import java.util.Map;
  * @date 2022/11/22 3:57
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     @Log("获取用户信息")
-    @GetMapping("/user")
+    @GetMapping()
     public ComRet getUserInfo(@RequestHeader Map<String, String> headers) {
         Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
         User user = userService.getUserById(userId);
@@ -30,7 +34,7 @@ public class UserController {
     }
 
     @Log("修改用户基本信息")
-    @PostMapping("/user")
+    @PostMapping
     public ComRet updateUserInfo(@RequestHeader Map<String, String> headers,
                                  @RequestBody User user) {
 
@@ -75,7 +79,7 @@ public class UserController {
     }
 
     @Log("修改用户头像")
-    @PostMapping("/user/headImg")
+    @PostMapping("/headImg")
     public ComRet updateUserHeadImg(@RequestHeader Map<String, String> headers,
                                  @RequestBody String fileName) {
         Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
@@ -89,7 +93,7 @@ public class UserController {
     }
 
     @Log("修改用户密码")
-    @PostMapping("/user/password")
+    @PostMapping("/password")
     public ComRet updateUserPassword(@RequestHeader Map<String, String> headers,
                                      @RequestBody Map<String,String> map) {
         String password = map.get(KeysProperties.USER_PASSWORD_KEY);
@@ -147,17 +151,33 @@ public class UserController {
     }
 
     @Log("用户退出登录")
-    @PostMapping("/user/logout")
+    @PostMapping("/logout")
     public ComRet logout() {
         return ComRet.ok("退出登录成功");
     }
 
     @Log("获取用户角色名")
-    @GetMapping("/user/role")
+    @GetMapping("/role")
     public ComRet getRole(@RequestHeader Map<String, String> headers) {
         String roleId = JwtUtil.claims(headers, KeysProperties.TOKEN_ROLE_ID_KEY);
         String name = userService.getRoleName(Long.parseLong(roleId));
         return ComRet.ok("查询成功").add("data", name);
     }
 
+    /**
+     * 获取用户对应权限
+     * @param headers headers
+     * @param pmName 权限名
+     * @return return
+     */
+    @Log("获取用户对应权限")
+    @GetMapping("/pm")
+    public ComRet getPermissionByRoleId(@RequestHeader Map<String, String> headers,String pmName) {
+        Long userId = Long.parseLong(JwtUtil.claims(headers, KeysProperties.TOKEN_USER_ID_KEY));
+        if (StringUtils.isEmpty(pmName)){
+            return ComRet.fail("参数有问题");
+        }
+        Integer permissionId = rolePermissionService.getRolePermissionId(userId, pmName);
+        return ComRet.ok().add("data", permissionId != null);
+    }
 }
