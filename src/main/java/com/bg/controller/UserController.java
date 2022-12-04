@@ -180,4 +180,20 @@ public class UserController {
         Integer permissionId = rolePermissionService.getRolePermissionId(userId, pmName);
         return ComRet.ok().add("data", permissionId != null);
     }
+
+    /**
+     * 检查登录状态是否过期
+     * @param headers headers
+     * @return return
+     */
+    @Log("检查登录状态是否过期")
+    @GetMapping("/expire")
+    public ComRet getIsExpireByToken(@RequestHeader Map<String, String> headers){
+        try {
+            JwtUtil.parse(headers.get(KeysProperties.TOKEN_KEY));
+            return ComRet.ok().add("isExpire",false);
+        }catch (Exception e){
+            return ComRet.fail().add("isExpire",true);
+        }
+    }
 }

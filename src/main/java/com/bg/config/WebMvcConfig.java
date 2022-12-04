@@ -35,9 +35,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/verifyCodeImg")  // 放行验证码请求
                 .excludePathPatterns("/user/login")     // 放行登录请求
                 .excludePathPatterns("/**/*.png", "/**/*.jpg", "/**/*.jpeg",
-                        "/**/*.PNG", "/**/*.JPG", "/**/*.JPEG");    // 放行图片资源请求
+                        "/**/*.PNG", "/**/*.JPG", "/**/*.JPEG")    // 放行图片资源请求
+                .excludePathPatterns("/user/expire");  // 校验登录是否过期
         // 公告操作拦截
         registry.addInterceptor(noticeOperationInterceptor)
-                .addPathPatterns("/notice","/notice/batch");
+                .addPathPatterns("/notice", "/notice/batch");
     }
 }
