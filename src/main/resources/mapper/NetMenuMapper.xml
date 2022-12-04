@@ -1,0 +1,26 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.NetMenuMapper">
+    <sql id="BaseColumn">
+        `id`,`name`,`remark`,`user_id`
+    </sql>
+    <insert id="insertNetMenu">
+        insert into `net_menu` (`id`,`name`,`remark`,`user_id`) values (null,#{name},#{remark},#{userId})
+    </insert>
+    <delete id="deleteNetMenuById">
+        delete from `net_menu` where `id` = #{netMenuId}
+    </delete>
+    <resultMap id="BaseResultMap" type="NetMenu">
+        <id property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="remark" column="remark"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+    <select id="getAllNetMenu" resultMap="BaseResultMap">
+        select <include refid="BaseColumn" /> from `net_menu`
+    </select>
+
+</mapper>

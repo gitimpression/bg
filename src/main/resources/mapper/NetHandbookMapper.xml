@@ -1,0 +1,15 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.NetHandbookMapper">
+    <insert id="insertNetHandbook">
+        insert into `net_handbook` (`id`,`title`,`content`,`user_id`) values (null,#{title},#{content},#{userId})
+    </insert>
+    <select id="getAllNetHandbook" resultType="com.bg.entity.NetHandbook">
+        select * from `net_handbook`
+    </select>
+    <delete id="deleteNetHandbook" >
+        delete from `net_handbook` where `id` = #{netHandbookId}
+    </delete>
+</mapper>

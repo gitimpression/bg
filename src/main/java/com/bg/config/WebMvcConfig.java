@@ -1,9 +1,9 @@
 package com.bg.config;
 
+import com.bg.interceptor.NetHandbookOperationInterceptor;
 import com.bg.interceptor.NoticeOperationInterceptor;
 import com.bg.interceptor.UserLoginInterceptor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,6 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private NoticeOperationInterceptor noticeOperationInterceptor;
     @Resource
     private UserLoginInterceptor userLoginInterceptor;
+    @Resource
+    private NetHandbookOperationInterceptor netOperationInterceptor;
 
     /**
      * 配置拦截器
@@ -40,5 +42,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 公告操作拦截
         registry.addInterceptor(noticeOperationInterceptor)
                 .addPathPatterns("/notice", "/notice/batch");
+        // 网络服务 手册 拦截
+        registry.addInterceptor(netOperationInterceptor)
+                .addPathPatterns("/netHandbook");
     }
 }

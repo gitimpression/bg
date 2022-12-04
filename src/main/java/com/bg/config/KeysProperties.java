@@ -19,5 +19,6 @@ public class KeysProperties {
 
     public static final String SQL_USER_LOG_METHOD_LOGIN = "com.bg.controller.UserController.login";
     public static final String USER_NOTICE_PERMISSION_KEY = "notice";
+    public static final String USER_NET_PERMISSION_KEY = "net";
 
 }
