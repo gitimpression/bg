@@ -66,3 +66,10 @@ export const delRequest = (url, params) => {
         data: params
     })
 }
+
+export const getPm = (name) => {
+    return axios({
+        method: "GET",
+        url: baseUrl + "/api/user/pm?pmName=" + name,
+    })
+}

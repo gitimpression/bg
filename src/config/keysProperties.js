@@ -4,7 +4,8 @@ let userProperties = {
     userInfoKey: "u_i",
     userVisitsNoticeList: "u_n_l",  // 用户访问过的公告，用于是否增加次数
     noticeDraftKey: "n_d",  // 公告草稿
-    noticePmKey: "name", // 公告操作权限
+    noticePmKey: "notice", // 公告操作权限
+    netPmKey: "net", // 手册操作权限
     userHeaderImgPrefix : "http://localhost:8081/upload/img/"
 }
 

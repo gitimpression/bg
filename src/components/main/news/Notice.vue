@@ -113,7 +113,7 @@ import NoticeList from "@/components/main/news/children/NoticeList.vue";
 import NoticeDetail from "@/components/main/news/children/NoticeDetail.vue";
 import keysProperties from "@/config/keysProperties";
 
-import { delRequest, getRequest, putRequest } from "@/util/api";
+import { delRequest, getRequest, putRequest,getPm } from "@/util/api";
 import Bus from "@/util/bus";
 export default {
   name: "Notice",
@@ -274,7 +274,7 @@ export default {
       this.isCheckAll = b;
     });
     // 获取权限
-    getRequest("/api/user/pm?pmName=notice").then(res => {
+    getPm(keysProperties.noticePmKey).then(res => {
       if (res.code == 200) {
         this.noticePm = res.data.data
         this.$refs['noticeDetailRef'].deleteNoticePm = this.noticePm
