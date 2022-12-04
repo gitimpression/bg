@@ -48,7 +48,7 @@
 import validator from '@/util/validator'
 import { getRequest, postRequest } from '@/util/api'
 import keysProperties from '@/config/keysProperties'
-
+import local from '@/util/local'
 export default {
     name: "Login",
     data() {
@@ -112,6 +112,21 @@ export default {
                 } else {
                     this.$message.error("请检查输入的内容是否合法")
                     return false
+                }
+            })
+        }
+    },
+    beforeCreate(){
+        // 检查是否已经登录
+        if (localStorage.getItem(keysProperties.tokenKey)) {  // 有token
+            getRequest("/api/user/expire")
+            .then(res => {
+                console.log(res);
+                if (res.code == 200 && res.data.isExpire == false) {  // 正确响应，身份未过期
+                    this.$router.push("/home")
+                }else{
+                    // 用户不是主动退出而过期，删除所有有关用户的信息
+                    local.storage.clearAllUserInfo()
                 }
             })
         }
