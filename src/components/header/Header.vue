@@ -33,6 +33,7 @@
 
 <script>
 import keysProperties from "@/config/keysProperties";
+import local from "@/util/local";
 import Bus from '@/util/bus'
 import { getRequest } from "@/util/api";
 export default {
@@ -60,10 +61,7 @@ export default {
             if (localStorage.getItem(keysProperties.tokenKey)) {
               this.postRequest("/api/user/logout").then((res) => {
                 this.$store.state.routes = []// 清空路由
-                localStorage.removeItem(keysProperties.tokenKey) // 清空token
-                localStorage.removeItem(keysProperties.userInfoKey) // 清空个人信息
-                localStorage.removeItem(keysProperties.noticeDraftKey) // 清空公告草稿
-                localStorage.removeItem(keysProperties.userVisitsNoticeList) // 清空浏览记录
+                local.storage.clearAllUserInfo()  // 清空所有用户信息
                 this.$message({
                   message: res.msg,
                   type: "success",
