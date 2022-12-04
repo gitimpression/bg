@@ -36,14 +36,16 @@ public class UserAspect {
     /**
      * 切入UserController非查询动作
      */
-    @Pointcut("execution(* com.bg.controller.UserController.*(..)) && !execution(* com.bg.controller.UserController.get*(..))")
+    @Pointcut("execution(* com.bg.controller.UserController.*(..)) && " +
+            "!execution(* com.bg.controller.UserController.get*(..))")
     public void afterUserController() {
     }
 
     /**
      * 切入NoticeController非查询动作
      */
-    @Pointcut("execution(* com.bg.controller.NoticeController.*(..)) && !execution(* com.bg.controller.NoticeController.get*(..))")
+    @Pointcut("execution(* com.bg.controller.NoticeController.*(..)) && " +
+            "!execution(* com.bg.controller.NoticeController.get*(..))")
     public void afterNoticeController() {
     }
 

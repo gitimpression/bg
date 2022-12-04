@@ -1,0 +1,18 @@
+<?xm1 version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bg.mapper.FeedbackMapper">
+    <sql id="BaseColumn" >
+        `id`,`title`,`content`,`user_id`,`time`
+    </sql>
+    <select id="getFeedbackByPage" resultType="com.bg.entity.Feedback">
+        select <include refid="BaseColumn"/> from `feedback`
+    </select>
+    <insert id="insertFeedback">
+        insert into `feedback` (<include refid="BaseColumn"/>) values (null,#{title},#{content},#{usrId},#{time})
+    </insert>
+    <delete id="deleteFeedback">
+        delete from `feedback` where `id` = #{feedbackId}
+    </delete>
+</mapper>

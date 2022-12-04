@@ -18,7 +18,8 @@ public class KeysProperties {
     public static final String USER_HEADER_IMG_PREFIX = "http://localhost:8081/upload/img/";
 
     public static final String SQL_USER_LOG_METHOD_LOGIN = "com.bg.controller.UserController.login";
-    public static final String USER_NOTICE_PERMISSION_KEY = "notice";
-    public static final String USER_NET_PERMISSION_KEY = "net";
+    public static final String USER_NOTICE_OPERATION_PERMISSION_KEY = "notice_operation";
+    public static final String USER_NET_OPERATION_PERMISSION_KEY = "net_operation";
+    public static final String USER_FEEDBACK_OPERATION_PERMISSION_KEY = "feedback_operation";
 
 }

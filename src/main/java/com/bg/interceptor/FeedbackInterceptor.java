@@ -11,20 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 网络服务 操作权限检查
  * @author ctp
- * @date 2022/12/4 12:02
+ * @date 2022/12/4 13:33
  */
 @Component
-public class NetHandbookOperationInterceptor implements HandlerInterceptor {
+public class FeedbackInterceptor implements HandlerInterceptor {
     @Resource
     private RolePermissionService rolePermissionService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (!"GET".equals(request.getMethod())) {
+        if (!"PUT".equals(request.getMethod())) {
             String token = request.getHeader(KeysProperties.TOKEN_KEY);
             long userId = Long.parseLong(JwtUtil.claims(token, KeysProperties.TOKEN_USER_ID_KEY));
-            Integer id = rolePermissionService.getRolePermissionId(userId, KeysProperties.USER_NET_OPERATION_PERMISSION_KEY);
+            Integer id = rolePermissionService.getRolePermissionId(userId, KeysProperties.USER_FEEDBACK_OPERATION_PERMISSION_KEY);
             return id != null;
         }
         return true;

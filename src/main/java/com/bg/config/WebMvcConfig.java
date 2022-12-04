@@ -1,5 +1,6 @@
 package com.bg.config;
 
+import com.bg.interceptor.FeedbackInterceptor;
 import com.bg.interceptor.NetHandbookOperationInterceptor;
 import com.bg.interceptor.NoticeOperationInterceptor;
 import com.bg.interceptor.UserLoginInterceptor;
@@ -23,6 +24,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private UserLoginInterceptor userLoginInterceptor;
     @Resource
     private NetHandbookOperationInterceptor netOperationInterceptor;
+    @Resource
+    private FeedbackInterceptor feedbackInterceptor;
 
     /**
      * 配置拦截器
@@ -45,5 +48,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 网络服务 手册 拦截
         registry.addInterceptor(netOperationInterceptor)
                 .addPathPatterns("/netHandbook");
+        // 反馈 拦截
+        registry.addInterceptor(feedbackInterceptor)
+                .addPathPatterns("/feedback");
     }
 }
