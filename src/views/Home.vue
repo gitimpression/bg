@@ -8,10 +8,10 @@
       <el-container>
         <!-- 左侧导航 -->
         <el-aside class="home-aside">
-            <Aside></Aside>
+          <Aside></Aside>
         </el-aside>
         <!-- 中间内容 -->
-        <el-main>
+        <el-main class="home-main">
           <div v-if="this.$router.currentRoute.path == '/home'">
             <welcome></welcome>
           </div>
@@ -23,16 +23,14 @@
 </template>
 
 <script>
-
-import Header from '@/components/header/Header.vue'
-import Aside from '@/components/aside/Aside.vue';
-import Welcome from '@/components/main/Welcome.vue';
+import Header from "@/components/header/Header.vue";
+import Aside from "@/components/aside/Aside.vue";
+import Welcome from "@/components/main/Welcome.vue";
 
 export default {
   name: "Home",
   data() {
-    return {
-    }
+    return {};
   },
   components: {
     Aside,
@@ -54,5 +52,8 @@ export default {
 }
 .home {
   height: 100%;
+}
+.home-main{
+  overflow: scroll;
 }
 </style>

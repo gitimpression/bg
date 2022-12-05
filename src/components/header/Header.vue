@@ -16,12 +16,6 @@
           ><i><img class="head-img" :src="user.headImg" /></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-s-tools" command="setting"
-            >偏好设置</el-dropdown-item
-          >
-          <el-dropdown-item icon="el-icon-question" command="help"
-            >帮助</el-dropdown-item
-          >
           <el-dropdown-item icon="el-icon-remove" command="logout"
             >退出登录</el-dropdown-item
           >
