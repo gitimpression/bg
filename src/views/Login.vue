@@ -31,15 +31,10 @@
                 <el-checkbox v-model="loginForm.remember" class="loginRemember">3天免登录</el-checkbox>
             </el-col>
             <el-col style="width: auto">
-                <el-link type="primary">没有账号？去注册</el-link>
+                <el-link type="primary" @click="toRegister">没有账号？去注册</el-link>
             </el-col>
         </el-row>
         <el-button type="primary" @click="login()" class="loginBtn">登录</el-button>
-        <el-row type="flex" justify="end" style="margin: 10px auto">
-            <el-col style="width: auto">
-                <el-link type="primary">找回密码</el-link>
-            </el-col>
-        </el-row>
     </el-form>
   </div>
 </template>
@@ -56,8 +51,8 @@ export default {
             verifyImgUrl: '',
             loading: false, // 遮罩
             loginForm: {// 用户输入内容
-                username: 'admin',
-                password: '123456',
+                username: '',
+                password: '',
                 code: '',
                 remember: false
             },
@@ -77,6 +72,9 @@ export default {
         }
     },
     methods: {
+        toRegister(){
+            this.$router.push('/register')
+        },
         getVerifyCodeImg(){
             this.loading = true
             // 获取验证码图片
@@ -111,6 +109,7 @@ export default {
                     
                 } else {
                     this.$message.error("请检查输入的内容是否合法")
+                    this.loading = false
                     return false
                 }
             })

@@ -36,10 +36,10 @@ router.beforeEach((to, from, next) => {
     //     }
     //   }
     // })
-    if (to.path != '/') {  // 不是前往登录页  初始化菜单dsa
+    if (to.path != '/') {  // 不是前往登录页  初始化菜单
       initMenu(router, store)
     }
-  } else if (to.path != '/') {  // 未登录 访问的不是登录页
+  } else if (to.path != '/' && to.path != '/register') {  // 未登录 访问的不是登录页
     router.push('/')
   }
   next()
