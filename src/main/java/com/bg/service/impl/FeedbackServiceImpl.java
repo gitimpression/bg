@@ -6,6 +6,8 @@ import com.bg.service.FeedbackService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * @date 2022/12/4 13:14
  */
 @Service
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
     @Resource
     private FeedbackMapper feedbackMapper;

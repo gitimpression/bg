@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface SystemMenuService {
     List<SystemMenu> getSystemMenuByRoleId(Long roleId);
+    List<SystemMenu> getAllSystemMenu();
+    boolean updateSystemMenu(SystemMenu systemMenu);
+    boolean deleteSystemMenu(Long systemMenuId);
+    boolean insertSystemMenu(SystemMenu systemMenu);
 }

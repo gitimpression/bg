@@ -28,4 +28,24 @@ public class SystemMenuServiceImpl implements SystemMenuService {
     public List<SystemMenu> getSystemMenuByRoleId(Long roleId) {
         return systemMenuMapper.getSystemMenuByRoleId(roleId);
     }
+
+    @Override
+    public List<SystemMenu> getAllSystemMenu() {
+        return systemMenuMapper.getAllSystemMenu();
+    }
+
+    @Override
+    public boolean updateSystemMenu(SystemMenu systemMenu) {
+        return systemMenuMapper.updateSystemMenu(systemMenu);
+    }
+
+    @Override
+    public boolean deleteSystemMenu(Long systemMenuId) {
+        return systemMenuMapper.deleteSystemMenu(systemMenuId);
+    }
+
+    @Override
+    public boolean insertSystemMenu(SystemMenu systemMenu) {
+        return systemMenuMapper.insertSystemMenu(systemMenu);
+    }
 }

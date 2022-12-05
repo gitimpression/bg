@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface SystemMenuMapper {
     List<SystemMenu> getSystemMenuByRoleId(@Param("roleId")Long roleId);
+    List<SystemMenu> getAllSystemMenu();
+    boolean updateSystemMenu(SystemMenu systemMenu);
+    boolean deleteSystemMenu(@Param("systemMenuId") Long systemMenuId);
+    boolean insertSystemMenu(SystemMenu systemMenu);
 }

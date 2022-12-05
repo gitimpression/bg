@@ -18,10 +18,50 @@
     <sql id="BaseColumn">
         `id`,`name`,`url`,`path`,`component`,`parent_id`,`icon_clz`,`enabled`,`keep_alive`
     </sql>
+    <insert id="insertSystemMenu">
+        insert into `sys_menu` (<include refid="BaseColumn"/>)
+        values (null,#{name},#{url},#{path},#{component},#{parentId},#{iconClz},#{enabled},#{keepAlive})
+    </insert>
+    <update id="updateSystemMenu" parameterType="SystemMenu">
+        update `sys_menu`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                `name` = #{name} ,
+            </if>
+            <if test="url != null and url != ''">
+                `url` = #{url} ,
+            </if>
+            <if test="path != null and path != ''">
+                `path` = #{path} ,
+            </if>
+            <if test="component != null and component != ''">
+                `component` = #{component} ,
+            </if>
+            <if test="parentId != null and parentId != ''">
+                `parent_id` = #{parentId} ,
+            </if>
+            <if test="enabled != null and enabled != ''">
+                `enabled` = #{enabled} ,
+            </if>
+            <if test="keepAlive != null and keepAlive != ''">
+                `keep_alive` = #{keepAlive} ,
+            </if>
+            <if test="iconClz != null and iconClz != ''">
+                `icon_clz` = #{iconClz} ,
+            </if>
+        </trim>
+        where `id` = #{id}
+    </update>
+    <delete id="deleteSystemMenu">
+        delete from `sys_menu` where `id` = #{systemMenuId}
+    </delete>
 
     <select id="getSystemMenuByRoleId" resultMap="SystemMenuResultMap">
 <!--    根据用户角色获取权限-->
         select <include refid="BaseColumn" /> from `sys_menu`
         where `permission_id` in (select `permission_id` from `role_permission` where `role_id` = #{roleId})
+    </select>
+    <select id="getAllSystemMenu" resultMap="SystemMenuResultMap">
+        select * from `sys_menu`
     </select>
 </mapper>

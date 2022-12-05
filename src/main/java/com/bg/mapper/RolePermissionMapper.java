@@ -1,6 +1,9 @@
 package com.bg.mapper;
 
+import com.bg.entity.RolePermission;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author ctp
@@ -8,4 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface RolePermissionMapper {
     Integer getRolePermissionId(@Param("userId")Long userId, @Param("pmName")String pmName);
+    List<Long> getPermissionByRoleId(@Param("roleId") Long roleId);
+    boolean insertRolePermission(RolePermission rolePermission);
+    boolean deleteRolePermission(RolePermission rolePermission);
 }

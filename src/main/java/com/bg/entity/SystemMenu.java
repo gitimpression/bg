@@ -28,7 +28,6 @@ public class SystemMenu implements Comparable<SystemMenu> , Serializable {
     private Long permissionId;
     private List<SystemMenu> children = new ArrayList<>();// 封装数据返回给前端
 
-
     @Override
     public int compareTo(SystemMenu o) {
 //        return Integer.parseInt(Long.toString(o.getId())) - Integer.parseInt(Long.toString(this.getId())); // 降序

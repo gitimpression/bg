@@ -17,4 +17,5 @@ import lombok.ToString;
 public class Role {
     private Long id;
     private String name;
+    private String remark;
 }

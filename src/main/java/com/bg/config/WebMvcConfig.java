@@ -1,9 +1,6 @@
 package com.bg.config;
 
-import com.bg.interceptor.FeedbackInterceptor;
-import com.bg.interceptor.NetHandbookOperationInterceptor;
-import com.bg.interceptor.NoticeOperationInterceptor;
-import com.bg.interceptor.UserLoginInterceptor;
+import com.bg.interceptor.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,6 +23,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private NetHandbookOperationInterceptor netOperationInterceptor;
     @Resource
     private FeedbackInterceptor feedbackInterceptor;
+    @Resource
+    private PermissionInterceptor permissionInterceptor;
+    @Resource
+    private SystemMenuInterceptor systemMenuInterceptor;
 
     /**
      * 配置拦截器
@@ -51,5 +52,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 反馈 拦截
         registry.addInterceptor(feedbackInterceptor)
                 .addPathPatterns("/feedback");
+        // 系统管理接口
+        registry.addInterceptor(systemMenuInterceptor)
+                .addPathPatterns("/sys");
+        // 权限管理接口
+        registry.addInterceptor(permissionInterceptor)
+                .addPathPatterns("/pm");
     }
 }
