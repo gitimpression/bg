@@ -156,6 +156,28 @@ public class UserController {
         return ComRet.ok("退出登录成功");
     }
 
+    @Log("用户注册")
+    @PutMapping("/register")
+    public ComRet register(@RequestBody User user) {
+        if (user == null){
+            return ComRet.fail("参数有误");
+        }
+        if (UserUtil.checkUsername(user.getUsername()) && UserUtil.checkPassword(user.getPassword())){
+            if (userService.getUserByUsername(user.getUsername()) != null){
+                return ComRet.fail("用户名重复");
+            }
+            user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+            boolean b = userService.insertUser(user);
+            if (b){
+                return ComRet.ok("注册成功");
+            }else{
+                return ComRet.fail("注册失败");
+            }
+        }else{
+            return ComRet.fail("注册失败");
+        }
+    }
+
     @Log("获取用户角色名")
     @GetMapping("/role")
     public ComRet getRole(@RequestHeader Map<String, String> headers) {
@@ -196,4 +218,6 @@ public class UserController {
             return ComRet.fail().add("isExpire",true);
         }
     }
+
+
 }

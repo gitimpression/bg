@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUsername(String username) {
+        return userMapper.getUserByUsername(username);
+    }
+
+    @Override
     public User login(String username, String password) {
         return userMapper.login(username, password);
     }
@@ -50,5 +55,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUserLoginTime(Long userId, String loginTime) {
         return userMapper.updateUserLoginTime(userId, loginTime);
+    }
+
+    @Override
+    public boolean insertUser(User user) {
+        return userMapper.insertUser(user);
     }
 }

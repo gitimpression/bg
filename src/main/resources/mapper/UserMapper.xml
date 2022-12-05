@@ -18,6 +18,12 @@
     <sql id="noUserPwdColumn">
         `id`,`username`,`head_img`,`role_id`,`user_status`,`create_time`,`login_time`,`email`,`birthday`,`gender`
     </sql>
+    <insert id="insertUser">
+        insert into `user`
+        (`id`,`username`,`password`,`head_img`,`role_id`,`user_status`,`create_time`,`login_time`,`email`,`birthday`,`gender`)
+        values
+        (null, #{username},#{password},null,1,1,#{createTime},#{loginTime},null,null,1)
+    </insert>
     <select id="getUserById" resultMap="BaseColumnMap">
         select
         <include refid="noUserPwdColumn"/>
@@ -32,6 +38,9 @@
 
     <select id="getRoleName" resultType="string">
         select `remark` from `role` where id = #{userId}
+    </select>
+    <select id="getUserByUsername" resultType="com.bg.entity.User">
+        select `username` from `user` where `username` = #{username} limit 1
     </select>
 
     <update id="updateUserHeadImg">

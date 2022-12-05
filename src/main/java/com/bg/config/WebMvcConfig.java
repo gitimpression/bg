@@ -40,6 +40,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")              // 拦截所有请求
                 .excludePathPatterns("/verifyCodeImg")  // 放行验证码请求
                 .excludePathPatterns("/user/login")     // 放行登录请求
+                .excludePathPatterns("/user/register")     // 放行注册请求
                 .excludePathPatterns("/**/*.png", "/**/*.jpg", "/**/*.jpeg",
                         "/**/*.PNG", "/**/*.JPG", "/**/*.JPEG")    // 放行图片资源请求
                 .excludePathPatterns("/user/expire");  // 校验登录是否过期
