@@ -1,5 +1,9 @@
 package com.bg.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 存放key值
  * @author ctp
@@ -21,5 +25,8 @@ public class KeysProperties {
     public static final String USER_NOTICE_OPERATION_PERMISSION_KEY = "notice_operation";
     public static final String USER_NET_OPERATION_PERMISSION_KEY = "net_operation";
     public static final String USER_FEEDBACK_OPERATION_PERMISSION_KEY = "feedback_operation";
+
+
+    public static final List<String> USER_LOG_METHOD_FILTER_ARRAY = Arrays.asList("get","update","delete","insert","login","logout");
 
 }

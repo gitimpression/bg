@@ -45,10 +45,18 @@ public class UserLogServiceImpl implements UserLogService {
     }
 
     @Override
-    public PageInfo<UserLog> getAllUserLogPage(Long userId, Integer pageNum, Integer pageSize) {
+    public PageInfo<UserLog> getAllUserLogPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserLog> userLogList = userLogMapper.getAllUserLogPage(userId);
+        List<UserLog> userLogList = userLogMapper.getAllUserLogPage();
         return new PageInfo<>(userLogList, 5);
+    }
+
+    @Override
+    public PageInfo<UserLog> getAllUserLogPageByCondition(Integer pageNum, Integer pageSize, UserLog userLog, String createBeginTime,
+                                               String createEndTime, Long consumeBeginTime, Long consumeEndTime) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserLog> userLogs = userLogMapper.getAllUserLogPageByCondition(userLog, createBeginTime, createEndTime, consumeBeginTime, consumeEndTime);
+        return new PageInfo<>(userLogs,5);
     }
 
     @Override
@@ -57,5 +65,4 @@ public class UserLogServiceImpl implements UserLogService {
         List<UserLog> userLogList = userLogMapper.getUserLogPage(userId);
         return new PageInfo<>(userLogList, 5);
     }
-
 }

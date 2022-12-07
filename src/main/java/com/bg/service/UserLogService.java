@@ -18,7 +18,9 @@ public interface UserLogService {
     PageInfo<SimpleUserLog> getSimpleUserLoginLog(Long userId, Integer pageNum, Integer pageSize);
 
     // 查询所有用户日志记录
-    PageInfo<UserLog> getAllUserLogPage(Long userId, Integer pageNum, Integer pageSize);
+    PageInfo<UserLog> getAllUserLogPage(Integer pageNum, Integer pageSize);
+    PageInfo<UserLog> getAllUserLogPageByCondition(Integer pageNum, Integer pageSize, UserLog userLog,String createBeginTime,
+                                        String createEndTime,Long consumeBeginTime,Long consumeEndTime);
 
     // 查询指定用户日志记录
     PageInfo<UserLog> getUserLogPage(Long userId, Integer pageNum, Integer pageSize);

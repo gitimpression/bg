@@ -23,7 +23,7 @@
     </select>
 
     <select id="getAllUserLogPage" resultType="UserLog">
-        select <include refid="UserLogColumn"/> from `user_log` by `create_time` desc
+        select <include refid="UserLogColumn"/> from `user_log` order by `create_time` desc
     </select>
 
     <select id="getUserLogPage" resultType="UserLog">
@@ -35,5 +35,56 @@
         where `method` = #{method}
         and `user_id` = #{userId}
         order by `create_time` desc
+    </select>
+    <select id="getAllUserLogPageByCondition" resultType="UserLog">
+        select * from `user_log`
+        <trim prefix="where" suffixOverrides="and">
+            <if test="userLog.userId != null">
+                `user_id` = #{userLog.userId} and
+            </if>
+            <if test="userLog.method != null">
+                `method` like concat('%',#{userLog.method},'%') and
+            </if>
+            <choose>
+                <when test="createBeginTime != null and createEndTime != null and createBeginTime lt createEndTime">
+                    `create_time` between #{createBeginTime} and #{createEndTime} and
+                </when>
+                <when test="createBeginTime != null and createEndTime != null and createBeginTime gt createEndTime">
+                    `create_time` between #{createEndTime} and #{createBeginTime} and
+                </when>
+                <when test="createBeginTime == null and createEndTime != null">
+                    `create_time`<![CDATA[ < ]]> #{createEndTime} and
+                </when>
+                <when test="createBeginTime != null and createEndTime == null">
+                    `create_time`<![CDATA[ > ]]> #{createBeginTime} and
+                </when>
+            </choose>
+
+            <choose>
+                <when test="consumeBeginTime != null and consumeEndTime != null and consumeBeginTime lt consumeEndTime">
+                    `consume_time` between #{consumeBeginTime} and #{consumeEndTime} and
+                </when>
+                <when test="consumeBeginTime != null and consumeEndTime != null and consumeBeginTime gt consumeEndTime">
+                    `consume_time` between #{consumeEndTime} and #{consumeBeginTime} and
+                </when>
+                <when test="consumeBeginTime == null and consumeEndTime != null">
+                    `consume_time`<![CDATA[ < ]]> #{consumeEndTime} and
+                </when>
+                <when test="consumeBeginTime != null and consumeEndTime == null">
+                    `consume_time`<![CDATA[ > ]]> #{consumeBeginTime} and
+                </when>
+            </choose>
+
+            <if test="userLog.ip != null">
+                `ip` like concat('%',#{userLog.ip},'%') and
+            </if>
+
+        </trim>
+--         where
+--         `user_id` = 1 and
+--         `method` like '%get%' and
+--         `consume_time` between 0 and 50 AND
+--         `create_time` between '2022-12-01' and '2022-12-02' and
+--         `ip` like '%127%'
     </select>
 </mapper>

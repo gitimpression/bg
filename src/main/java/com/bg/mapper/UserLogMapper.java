@@ -23,7 +23,11 @@ public interface UserLogMapper {
     List<SimpleUserLog> getSimpleUserLoginLog(@Param("userId") Long userId, @Param("method") String method);
 
     // 获取所有用户日志分页数据
-    List<UserLog> getAllUserLogPage(@Param("userId") Long userId);
+    List<UserLog> getAllUserLogPage();
+    List<UserLog> getAllUserLogPageByCondition(@Param("userLog") UserLog userLog,@Param("createBeginTime") String createBeginTime,
+                                               @Param("createEndTime") String createEndTime,
+                                               @Param("consumeBeginTime") Long consumeBeginTime,
+                                               @Param("consumeEndTime") Long consumeEndTime);
 
     // 获取某个用户日志分页数据
     List<UserLog> getUserLogPage(@Param("userId") Long userId);

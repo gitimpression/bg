@@ -7,7 +7,6 @@ import com.bg.service.SystemMenuService;
 import com.bg.util.ComRet;
 import com.bg.util.JwtUtil;
 import com.bg.util.SystemMenusUtil;
-import com.sun.istack.internal.NotNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;

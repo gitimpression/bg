@@ -1,5 +1,6 @@
 package com.bg.controller;
 
+import com.bg.anno.Log;
 import com.bg.entity.BgData;
 import com.bg.service.BgDataService;
 import com.bg.util.ComRet;
@@ -24,6 +25,7 @@ public class BgDataController {
         return ComRet.ok().add("data", datas);
     }
 
+    @Log("增加数据字典")
     @PostMapping("/datas")
     public ComRet getAllData(){
         List<BgData> datas = bgDataService.getAllData();

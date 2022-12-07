@@ -5,22 +5,26 @@
 <mapper namespace="com.bg.mapper.SystemMenuMapper">
 
     <resultMap id="SystemMenuResultMap" type="SystemMenu">
-        <id property="id" column="id" jdbcType="BIGINT" javaType="Long" />
-        <result property="name" column="name" jdbcType="VARCHAR" javaType="String"/>
-        <result property="url" column="url" jdbcType="VARCHAR" javaType="String"/>
-        <result property="path" column="path" jdbcType="VARCHAR" javaType="String"/>
-        <result property="component" column="component" jdbcType="VARCHAR" javaType="String"/>
-        <result property="parentId" column="parent_id" jdbcType="BIGINT" javaType="Long"/>
-        <result property="iconClz" column="icon_clz" jdbcType="VARCHAR" javaType="String"/>
-        <result property="enabled" column="enabled" jdbcType="VARCHAR" javaType="String"/>
-        <result property="keepAlive" column="keep_alive" jdbcType="VARCHAR" javaType="String"/>
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="url" column="url" />
+        <result property="path" column="path" />
+        <result property="component" column="component" />
+        <result property="parentId" column="parent_id" />
+        <result property="iconClz" column="icon_clz" />
+        <result property="enabled" column="enabled" />
+        <result property="keepAlive" column="keep_alive" />
+        <result property="keepAlive" column="keep_alive" />
     </resultMap>
     <sql id="BaseColumn">
         `id`,`name`,`url`,`path`,`component`,`parent_id`,`icon_clz`,`enabled`,`keep_alive`
     </sql>
+    <sql id="AllColumn">
+        `id`,`name`,`url`,`path`,`component`,`parent_id`,`icon_clz`,`enabled`,`keep_alive`,`permission_id`
+    </sql>
     <insert id="insertSystemMenu">
-        insert into `sys_menu` (<include refid="BaseColumn"/>)
-        values (null,#{name},#{url},#{path},#{component},#{parentId},#{iconClz},#{enabled},#{keepAlive})
+        insert into `sys_menu` (<include refid="AllColumn"/>)
+        values (null,#{name},#{url},#{path},#{component},#{parentId},#{iconClz},#{enabled},#{keepAlive},#{permissionId})
     </insert>
     <update id="updateSystemMenu" parameterType="SystemMenu">
         update `sys_menu`
@@ -48,6 +52,9 @@
             </if>
             <if test="iconClz != null and iconClz != ''">
                 `icon_clz` = #{iconClz} ,
+            </if>
+            <if test="permissionId != null and permissionId != ''">
+                `permission_id` = #{permissionId} ,
             </if>
         </trim>
         where `id` = #{id}

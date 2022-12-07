@@ -27,6 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private PermissionInterceptor permissionInterceptor;
     @Resource
     private SystemMenuInterceptor systemMenuInterceptor;
+    @Resource
+    private UserLogInterceptor userLogInterceptor;
 
     /**
      * 配置拦截器
@@ -59,5 +61,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 权限管理接口
         registry.addInterceptor(permissionInterceptor)
                 .addPathPatterns("/pm");
+        // 请求详尽用户日志拦截
+        registry.addInterceptor(userLogInterceptor)
+                .addPathPatterns("/userLog/*")
+                .excludePathPatterns("/userLog/simple","/userLog/login");
     }
 }

@@ -34,26 +34,17 @@ public class UserAspect {
     private UserLogService userLogService;
 
     /**
-     * 切入UserController非查询动作
+     * 切入非查询动作
      */
-    @Pointcut("execution(* com.bg.controller.UserController.*(..)) && " +
-            "!execution(* com.bg.controller.UserController.get*(..))")
-    public void afterUserController() {
-    }
-
-    /**
-     * 切入NoticeController非查询动作
-     */
-    @Pointcut("execution(* com.bg.controller.NoticeController.*(..)) && " +
-            "!execution(* com.bg.controller.NoticeController.get*(..))")
-    public void afterNoticeController() {
+    @Pointcut("execution(* com.bg.controller.*.*(..)) && !execution(* com.bg.controller.*.get*(..))")
+    public void afterAllController() {
     }
 
     /**
      * 记录用户操作
      * 更新，登录，退出登录
      */
-    @Around("afterUserController() || afterNoticeController()")
+    @Around("afterAllController()")
     public Object aroundUserOperation(ProceedingJoinPoint pjp) throws Throwable {
         long beginTime = System.currentTimeMillis();
         Object result = pjp.proceed();
@@ -63,6 +54,8 @@ public class UserAspect {
         saveUserLog(pjp,consumeTime);
         return result;
     }
+
+
 
     /**
      * 保存用户日志
@@ -124,7 +117,8 @@ public class UserAspect {
         userLog.setCreateTime(DateTimeUtil.getDataTime());
 
         // 8,存储记录
-        userLogService.insertUserLog(userLog);
+        if(!userLogService.insertUserLog(userLog)){
+            log.error("插入用户日志错误 : " + DateTimeUtil.getDataTime() + "," + System.currentTimeMillis());
+        }
     }
-
 }

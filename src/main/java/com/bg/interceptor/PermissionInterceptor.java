@@ -25,7 +25,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             String token = request.getHeader(KeysProperties.TOKEN_KEY);
             long userId = Long.parseLong(JwtUtil.claims(token, KeysProperties.TOKEN_USER_ID_KEY));
             User user = userService.getUserById(userId);
-            return user.getRoleId() == 3 && user.getRoleId() == 4;
+            return user.getRoleId() == 3 || user.getRoleId() == 4;
         }
         return true;
     }

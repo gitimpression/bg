@@ -1,5 +1,6 @@
 package com.bg.controller;
 
+import com.bg.anno.Log;
 import com.bg.config.KeysProperties;
 import com.bg.service.UploadService;
 import com.bg.util.ComRet;
@@ -26,6 +27,7 @@ public class UploadController {
      * @param file file
      * @return return
      */
+    @Log("用户上传图片")
     @PostMapping("/img")
     public ComRet upload(MultipartFile file, HttpSession session) {
         if (file == null){
