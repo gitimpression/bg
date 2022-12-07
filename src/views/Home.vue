@@ -5,7 +5,7 @@
       <el-header class="home-header">
         <Header></Header>
       </el-header>
-      <el-container>
+      <el-container class="home-container">
         <!-- 左侧导航 -->
         <el-aside class="home-aside">
           <Aside></Aside>
@@ -41,6 +41,9 @@ export default {
 </script>
 
 <style >
+.home-container{
+  height: calc(100% - 62.44px);
+}
 .home-aside {
   width: auto!important;;
   height: 100%;
@@ -52,8 +55,10 @@ export default {
 }
 .home {
   height: 100%;
+  overflow: hidden;
 }
 .home-main{
+  height: 100%;
   overflow: scroll;
 }
 </style>

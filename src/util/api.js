@@ -1,7 +1,6 @@
 import keysProperties from "@/config/keysProperties";
 import axios from "axios";
 import { Message } from "element-ui";
-import router from "../router"
 
 // 请求拦截器
 axios.interceptors.request.use(config => {

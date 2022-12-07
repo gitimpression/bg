@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-row>
+      <h3 style="display: inline-block;margin-right:6px">系统菜单</h3>
       <el-button @click="handleAdd">添加</el-button>
     </el-row>
     <!-- 系统菜单展示 -->
-    <el-table :data="systemMenuList" height="600">
+    <el-table :data="systemMenuList" height="800">
       <el-table-column label="ID" width="60">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
@@ -92,16 +93,16 @@
     >
       <el-form :model="modifyMenuForm" class="modifyDialog" label-width="80px">
         <el-form-item label="菜单名">
-          <el-input v-model="modifyMenuForm.name"></el-input>
+          <el-input v-model="modifyMenuForm.name" placeholder="name 如 个人信息"></el-input>
         </el-form-item>
         <el-form-item label="组件路径">
-          <el-input v-model="modifyMenuForm.url"></el-input>
+          <el-input v-model="modifyMenuForm.url" placeholder="url 如 prof/"></el-input>
         </el-form-item>
         <el-form-item label="路由">
-          <el-input v-model="modifyMenuForm.path"></el-input>
+          <el-input v-model="modifyMenuForm.path" placeholder="path 如 /basic"></el-input>
         </el-form-item>
         <el-form-item label="组件名">
-          <el-input v-model="modifyMenuForm.component"></el-input>
+          <el-input v-model="modifyMenuForm.component" placeholder="component 如 /Basic"></el-input>
         </el-form-item>
         <el-form-item label="父级菜单">
           <el-select
@@ -119,7 +120,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="图标">
-          <el-input v-model="modifyMenuForm.iconClz"></el-input>
+          <el-input v-model="modifyMenuForm.iconClz" placeholder="icon 如 el-icon-user"></el-input>
         </el-form-item>
         <el-form-item label="可见性">
           <el-select
@@ -166,6 +167,7 @@
 
 <script>
 import { delRequest, getRequest, postRequest, putRequest } from "@/util/api";
+import { initMenu } from "@/util/menus";
 export default {
   name: "SystemMenuManage",
   data() {
@@ -205,16 +207,16 @@ export default {
       }
     },
     modifyMenu() {
-      if (this.modifyMenuForm.id) {
+      if (confirm("确定？")) {
+        if (this.modifyMenuForm.id) {
         // 修改
         postRequest("/api/sys/menu", this.modifyMenuForm).then((res) => {
           if (res.code == 200) {
             this.$message({
               message: res.msg,
               type: "success",
+              // TODO 重新加载列表
             });
-            this.modifyMenuDialogVisiable = false;
-            this.getMenuList();
           }
         });
       } else {
@@ -224,11 +226,13 @@ export default {
             this.$message({
               message: res.msg,
               type: "success",
+              // TODO 重新加载列表
             });
             this.modifyMenuDialogVisiable = false;
             this.getMenuList();
           }
         });
+      }
       }
     },
     getMenuList() {

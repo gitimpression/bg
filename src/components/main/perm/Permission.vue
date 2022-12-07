@@ -2,9 +2,9 @@
   <div class="box">
     <el-row>
       <!-- 角色 -->
-      <h3 style="display: inline-block">角色表</h3>
+      <h3 style="display: inline-block">角色</h3>
       <el-button @click="showAddRole = true">添加角色</el-button>
-      <el-table :data="roleList" style="width: 100%" height="300">
+      <el-table :data="roleList" style="width: 100%" max-height="500">
         <el-table-column prop="id" label="ID" width="180"> </el-table-column>
         <el-table-column prop="name" label="角色名" width="180">
         </el-table-column>
@@ -34,10 +34,10 @@
       </el-table>
     </el-row>
     <el-row>
-      <!-- 权限表 -->
-      <h3 style="display: inline-block">权限表</h3>
+      <!-- 权限 -->
+      <h3 style="display: inline-block">权限</h3>
       <el-button @click="showAddPm = true">添加权限</el-button>
-      <el-table :data="pmList" style="width: 100%" height="300">
+      <el-table :data="pmList" style="width: 100%" max-height="800">
         <el-table-column prop="id" label="ID" width="180"> </el-table-column>
         <el-table-column prop="name" label="角色名" width="180">
         </el-table-column>
@@ -187,36 +187,38 @@ export default {
   },
   methods: {
     handleAddPm() {
-      if(confirm("确定添加吗？")){
-        putRequest("/api/pm",this.pmData).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            message: res.msg,
-            type:"success"
-          })
-          this.pmData = {}
-          this.showAddPm = false
-        }else{
-          this.$message.error(res.msg)
-        }
-      })
+      if (confirm("确定添加吗？")) {
+        putRequest("/api/pm", this.pmData).then((res) => {
+          if (res.code == 200) {
+            this.$message({
+              message: res.msg,
+              type: "success",
+            });
+            this.pmData = {};
+            this.showAddPm = false;
+            this.getPmList();
+          } else {
+            this.$message.error(res.msg);
+          }
+        });
       }
     },
     handleAddRole() {
       console.log(this.roleData);
-      if(confirm("确定添加吗？")){
-        putRequest("/api/role",this.roleData).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            message: res.msg,
-            type:"success"
-          })
-          this.roleData = {}
-          this.showAddRole = false
-        }else{
-          this.$message.error(res.msg)
-        }
-      })
+      if (confirm("确定添加吗？")) {
+        putRequest("/api/role", this.roleData).then((res) => {
+          if (res.code == 200) {
+            this.$message({
+              message: res.msg,
+              type: "success",
+            });
+            this.roleData = {};
+            this.getRoleList();
+            this.showAddRole = false;
+          } else {
+            this.$message.error(res.msg);
+          }
+        });
       }
     },
     handleDeleteRole(index, row) {
@@ -259,17 +261,6 @@ export default {
             this.dialogEditPmVisible = false;
           });
         }
-        // else {
-        //   console.log(this.pmEditFrom);
-        //   putRequest("/api/pm", this.pmEditFrom).then((res) => {
-        //     this.$message({
-        //       message: res.msg,
-        //       type: "success",
-        //     });
-        //     this.getPmList();
-        //     this.dialogEditPmVisible = false;
-        //   });
-        // }
       }
     },
     handleEditRole(index, row) {
@@ -281,7 +272,6 @@ export default {
       this.dialogEditPmVisible = true;
     },
     handleEditRoleForm() {
-      // console.log(this.roleEditForm);
       if (confirm("确定修改？")) {
         postRequest("/api/role", this.roleEditForm).then((res) => {
           this.$message({
@@ -291,16 +281,6 @@ export default {
           this.getRoleList();
           this.dialogEditRoleVisible = false;
         });
-        // else {
-        //   delRequest("/api/role", this.roleEditForm).then((res) => {
-        //     this.$message({
-        //       message: res.msg,
-        //       type: "success",
-        //     });
-        //     this.getRoleList();
-        //     this.dialogEditRoleVisible = false;
-        //   });
-        // }
       }
     },
     handleEditPmForm() {
@@ -314,17 +294,19 @@ export default {
       });
     },
     handleEditRolePermission() {
-      postRequest("/api/rolePm/" + this.roleDetailForm.id, {
-        idList: this.pmByRoleList,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.$message({
-            message: res.msg,
-            type: "success",
-          });
-        }
-        this.dialogPmDetailVisible = false;
-      });
+      if (confirm("确定操作？")) {
+        postRequest("/api/rolePm/" + this.roleDetailForm.id, {
+          idList: this.pmByRoleList,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.$message({
+              message: res.msg,
+              type: "success",
+            });
+          }
+          this.dialogPmDetailVisible = false;
+        });
+      }
     },
     handlePmDetail(index, row) {
       this.dialogPmDetailVisible = true;
