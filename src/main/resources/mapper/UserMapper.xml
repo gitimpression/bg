@@ -42,6 +42,9 @@
     <select id="getUserByUsername" resultType="com.bg.entity.User">
         select `username` from `user` where `username` = #{username} limit 1
     </select>
+    <select id="getUserByEmail" resultType="com.bg.entity.User">
+        select * from `user` where `email` = #{email}
+    </select>
 
     <update id="updateUserHeadImg">
         update `user` set `head_img` = #{head_img} where `id` = #{userId}

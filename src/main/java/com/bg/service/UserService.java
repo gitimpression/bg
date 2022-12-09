@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserService {
     User getUserById(Long id);
     User getUserByUsername(String username);
+    User getUserByEmail(String email);
     User login(String username, String password);
     String getRoleName(Long id);
     boolean updateUserHeadImg(Long userId, String fileName);

@@ -219,5 +219,33 @@ public class UserController {
         }
     }
 
-
+    /**
+     * 搜索用户
+     * @param type 类型 id/用户名/邮箱
+     * @param content 输入的内容
+     * @return 用户
+     */
+    @Log("搜索用户")
+    @GetMapping("/search")
+    public ComRet getUser(String type, String content){
+        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(content)){
+            return ComRet.fail("缺少参数");
+        }
+        switch (type){
+            case "userId":
+                User userById = userService.getUserById(Long.parseLong(content));
+                userById.setPassword(null);
+                return ComRet.ok().add("user", userById);
+            case "username":
+                User userByUsername = userService.getUserByUsername(content);
+                userByUsername.setPassword(null);;
+                return ComRet.ok().add("user", userByUsername);
+            case "email":
+                User userByEmail = userService.getUserByEmail(content);
+                userByEmail.setPassword(null);
+                return ComRet.ok().add("user", userByEmail);
+            default:
+                return ComRet.fail("参数有误");
+        }
+    }
 }
