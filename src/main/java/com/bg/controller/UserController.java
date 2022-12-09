@@ -141,6 +141,9 @@ public class UserController {
         if (loginUser == null) {    // 不存在用户
             return ComRet.fail("密码不正确或用户不存在");
         }
+        if (rolePermissionService.getRolePermissionId(loginUser.getId(), "login") == null){
+            return ComRet.fail("登录失败，用户没有登录权限");
+        }
         String token = JwtUtil.createToken(loginUser, remember);
         if (StringUtils.isEmpty(token)) {   // 创建token失败
             return ComRet.fail("创建登录状态失败");
