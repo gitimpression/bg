@@ -167,7 +167,6 @@
 
 <script>
 import { delRequest, getRequest, postRequest, putRequest } from "@/util/api";
-import { initMenu } from "@/util/menus";
 export default {
   name: "SystemMenuManage",
   data() {
@@ -217,6 +216,8 @@ export default {
               type: "success",
               // TODO 重新加载列表
             });
+            this.getMenuList()
+            this.modifyMenuDialogVisiable = false
           }
         });
       } else {

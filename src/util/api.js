@@ -21,8 +21,12 @@ axios.interceptors.request.use(config => {
 
 // 响应拦截器 返回处理正确的结果，错误给出提示不返回data
 axios.interceptors.response.use(response => {// axios 的 response
-    if(response.status !== 200 && response.data.code !== 200){
-        Message.error("error：" + res.msg) // 区别普通消息
+    if(response.status !== 200){
+        Message.error("error：" + response.message) // 区别普通消息
+        return
+    }
+    if(response.data.code !== 200){ // ComRet
+        Message.error("error：" + response.data.msg) // 区别普通消息
         return
     }
     return response.data;// ComRet 对象
