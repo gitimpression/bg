@@ -2,6 +2,8 @@ import keysProperties from "@/config/keysProperties";
 import axios from "axios";
 import { Message } from "element-ui";
 
+// 跨域 session丢失
+axios.defaults.withCredentials = true
 // 请求拦截器
 axios.interceptors.request.use(config => {
     if(localStorage.getItem(keysProperties.tokenKey)){
@@ -36,6 +38,7 @@ axios.interceptors.response.use(response => {// axios 的 response
 })
 
 
+// let baseUrl = 'http://bg.ctp.zone:8081'
 let baseUrl = ''
 
 export const getRequest = (url, params) => {

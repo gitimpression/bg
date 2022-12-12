@@ -28,14 +28,6 @@ Vue.use(ElementUI)
 // 路由守卫
 router.beforeEach((to, from, next) => {
   if (localStorage.getItem(keysProperties.tokenKey)) {// 已登录
-    // router.options.routes.forEach(r => {
-    //   if(r.name == 'Home'){
-    //     if (r.children && r.children instanceof Array && r.children.length > 0) {
-    //       // 重置清空home下的子路由，重新初始化
-    //       r.children = []
-    //     }
-    //   }
-    // })
     if (to.path != '/') {  // 不是前往登录页  初始化菜单
       initMenu(router, store)
     }
