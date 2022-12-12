@@ -2,9 +2,9 @@
   <div class="box">
     <el-row>
       <!-- 角色 -->
-      <h3 style="display: inline-block">角色</h3>
+      <h3 style="display: inline-block;margin-right: 10px;">角色</h3>
       <el-button @click="showAddRole = true">添加角色</el-button>
-      <el-table :data="roleList" style="width: 100%" max-height="500">
+      <el-table :data="roleList" style="width: 100%" v-loading="roleTableLoading" max-height="500">
         <el-table-column prop="id" label="ID" width="180"> </el-table-column>
         <el-table-column prop="name" label="角色名" width="180">
         </el-table-column>
@@ -35,11 +35,11 @@
     </el-row>
     <el-row>
       <!-- 权限 -->
-      <h3 style="display: inline-block">权限</h3>
+      <h3 style="display: inline-block;margin-right: 10px;">权限</h3>
       <el-button @click="showAddPm = true">添加权限</el-button>
-      <el-table :data="pmList" style="width: 100%" max-height="800">
+      <el-table :data="pmList" style="width: 100%" max-height="800" v-loading="pmTableLoading">
         <el-table-column prop="id" label="ID" width="180"> </el-table-column>
-        <el-table-column prop="name" label="角色名" width="180">
+        <el-table-column prop="name" label="权限名" width="300">
         </el-table-column>
         <el-table-column prop="remark" label="描述"> </el-table-column>
         <el-table-column label="操作">
@@ -76,12 +76,13 @@
         </el-form-item>
         <el-form-item label="拥有的权限">
           <el-checkbox-group v-model="pmByRoleList">
-            <el-checkbox
+            <div class="pmCheckBox">
+              <el-checkbox
               v-for="item in pmList"
               :key="item.remark"
               :label="item.id"
-              >{{ "【" + item.remark + "】" + item.name }}</el-checkbox
-            >
+              >{{ "【" + item.remark + "】" + item.name }}</el-checkbox>
+            </div>
           </el-checkbox-group>
         </el-form-item>
 
@@ -176,6 +177,8 @@ export default {
       dialogPmDetailVisible: false,
       dialogEditRoleVisible: false,
       dialogEditPmVisible: false,
+      roleTableLoading: false,
+      pmeTableLoading: false,
       roleDetailForm: {},
       roleEditForm: {},
       pmEditFrom: {},
@@ -316,13 +319,17 @@ export default {
     },
 
     getRoleList() {
+      this.roleTableLoading = true
       getRequest("/api/role").then((res) => {
         this.roleList = res.data.roleList;
+        this.roleTableLoading = false
       });
     },
     getPmList() {
+      this.pmTableLoading = true
       getRequest("/api/pm").then((res) => {
         this.pmList = res.data.permissionList;
+        this.pmTableLoading = false
       });
     },
     getRolePmList(id) {
@@ -342,5 +349,16 @@ export default {
 <style scoped>
 .box {
   height: 100%;
+}
+.pmCheckBox{
+  display: flex;
+  flex: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+.pmCheckBox label{
+  width: 30%;
 }
 </style>
