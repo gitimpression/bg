@@ -1,6 +1,8 @@
 package com.bg.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 用户有关的工具类，如校验用户名
@@ -8,7 +10,6 @@ import java.time.LocalDate;
  * @date 2022/11/29 13:28
  */
 public class UserUtil {
-
 
     /**
      * 校验用户名是否合法
@@ -47,39 +48,10 @@ public class UserUtil {
         if (!matches){  // 格式校验不通过
             return false;
         }
-        String[] date = birthday.split("-");
-
-        int i = date.length; // 2022-02-02
-        if (i != 3){
-            return false;
-        }
-
-        // 选择的年月日
-        int year = Integer.parseInt(date[0]);
-        int month = Integer.parseInt(date[1]);
-        int day = Integer.parseInt(date[2]);
-        if (year < 1900 || month < 1 || day < 1){
-            return false;
-        }
-        // 当前年月日
+        // 区间校验
+        LocalDate bir = LocalDate.parse(birthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate now = LocalDate.now();
-        int nowYear = now.getYear();
-        int nowMonth = now.getMonthValue();
-        int nowDay = now.getDayOfMonth();
-
-        if(year < nowYear){  // 今年之前
-            return true;
-        }else if (year == nowYear) {  // 今年，这个月之前
-            if(month < nowMonth){
-                return true;
-            }else if (month == nowMonth) {  //  今年这个月，今天之前
-                return day <= nowDay;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
-        }
+        return now.isAfter(bir) || now.isEqual(bir);  // 今天或者之前出生
     }
 
 }
