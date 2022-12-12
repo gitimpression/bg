@@ -17,8 +17,7 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item icon="el-icon-remove" command="logout"
-            >退出登录</el-dropdown-item
-          >
+            >退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -30,6 +29,7 @@ import keysProperties from "@/config/keysProperties";
 import local from "@/util/local";
 import Bus from '@/util/bus'
 import { getRequest } from "@/util/api";
+import { resetRouter } from '@/router';
 export default {
   name: "Header",
   data() {
@@ -64,6 +64,7 @@ export default {
                   this.$router.push("/"); // 跳转页面
                   this.loading = false
                 }, 1500);
+                resetRouter()
               })
             } else {
               this.$message({
