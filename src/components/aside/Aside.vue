@@ -2,6 +2,7 @@
   <div>
     <el-menu
       class="el-menu"
+      :default-active="this.$route.path"
       :router="true"
       :unique-opened="true"
       background-color="#545c64"
