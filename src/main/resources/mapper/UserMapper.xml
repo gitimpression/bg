@@ -69,15 +69,6 @@
                 end
                 ,
             </if>
-            <if test="password != null and password != ''">
-                `password` =
-                case
-                when `password` != #{password}
-                then #{password}
-                else `password`
-                end
-                ,
-            </if>
             <if test="roleId != null and roleId != ''">
                 `role_id` =
                 case
