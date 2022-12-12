@@ -122,7 +122,7 @@
 <script>
 import keysProperties from "@/config/keysProperties";
 import validator from "@/util/validator";
-import { postRequest } from "@/util/api";
+import { getRequest, postRequest } from "@/util/api";
 import Bus from "@/util/bus";
 import UserInfoChangeDialog from "@/components/main/prof/basic/children/UserInfoChangeDialog.vue";
 
@@ -202,7 +202,7 @@ export default {
     }).then((res) => {
       this.userStatusData = res.data.data;
     });
-    axios.get("/api/user/role").then((res) => {
+    getRequest("/api/user/role").then((res) => {
       this.roleName = res.data.data;
     });
   },
