@@ -33,14 +33,14 @@
 
 ## 截图
 
-![image-20221213032447611](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032447611.png)
+![image-20221213032447611](http://bg.ctp.zone:8082/upload/image-20221213032447611.png)
 
-![image-20221213032516051](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032516051.png)
+![image-20221213032516051](http://bg.ctp.zone:8082/upload/image-20221213032516051.png)
 
-![image-20221213032531709](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032531709.png)
+![image-20221213032531709](http://bg.ctp.zone:8082/upload/image-20221213032531709.png)
 
-![image-20221213032602307](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032602307.png)
+![image-20221213032602307](http://bg.ctp.zone:8082/upload/image-20221213032602307.png)
 
-![image-20221213032710957](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032710957.png)
+![image-20221213032710957](http://bg.ctp.zone:8082/upload/image-20221213032710957.png)
 
-![image-20221213032808109](C:\Users\25108\AppData\Roaming\Typora\typora-user-images\image-20221213032808109.png)
+![image-20221213032808109](http://bg.ctp.zone:8082/upload/image-20221213032808109.png)
